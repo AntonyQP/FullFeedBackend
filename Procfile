@@ -1,0 +1,1 @@
+web: java -jar build/libs/MINSA_Backend-0.0.1-SNAPSHOT.jar
