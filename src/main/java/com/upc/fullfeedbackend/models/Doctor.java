@@ -24,5 +24,4 @@ public class Doctor {
     @JoinColumn(name = "userID",nullable = true)
     private User user;
 
-
 }

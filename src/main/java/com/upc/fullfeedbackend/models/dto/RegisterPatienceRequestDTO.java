@@ -21,4 +21,12 @@ public class RegisterPatienceRequestDTO {
     private String dni;
     private Date registerDate;
     private String rol = "p";
+
+    private float height;
+    private float weight;
+    private float imc;
+    private float arm;
+    private float abdominal;
+    private float tmb;
+
 }

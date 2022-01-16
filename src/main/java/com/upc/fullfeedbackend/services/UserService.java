@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.print.Doc;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
@@ -75,6 +76,7 @@ public class UserService {
 
 
     public User savePatience(RegisterPatienceRequestDTO request){
+
         User user = new User();
         user.setDni(request.getDni());
         user.setEmail(request.getEmail());
@@ -90,12 +92,12 @@ public class UserService {
         user.setPassword(newPassword);
 
         Patience patience = new Patience();
-        patience.setAbdominal(0);
-        patience.setArm(0);
-        patience.setHeight(0);
-        patience.setImc(0);
-        patience.setWeight(0);
-        patience.setTmb(0);
+        patience.setAbdominal(request.getAbdominal());
+        patience.setArm(request.getArm());
+        patience.setHeight(request.getHeight());
+        patience.setImc(request.getImc());
+        patience.setWeight(request.getWeight());
+        patience.setTmb(request.getTmb());
         patience.setUser(user);
 
         try {
@@ -132,4 +134,39 @@ public class UserService {
 
         return nueva;
     }
+
+    public User findByDni(String dni){
+        return userRepository.findByDni(dni);
+    }
+
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
+
+    public String  DesencriptarContrasena (String contrasena){
+
+        byte[] salt = new String("12345678").getBytes();
+        int iterationCount = 40000;
+        int keyLength = 128;
+        SecretKeySpec key = null;
+        try {
+            key = createSecretKey("contrasena".toCharArray(), salt, iterationCount, keyLength);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        String nueva = contrasena;
+        try {
+            nueva = Encryption.decrypt(contrasena, key);
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return nueva;
+    }
+
 }
