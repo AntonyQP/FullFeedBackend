@@ -2,6 +2,7 @@ package com.upc.fullfeedbackend.services;
 
 import com.upc.fullfeedbackend.models.Doctor;
 import com.upc.fullfeedbackend.models.Patience;
+import com.upc.fullfeedbackend.models.Preferences;
 import com.upc.fullfeedbackend.models.User;
 import com.upc.fullfeedbackend.models.dto.RegisterDoctorRequestDTO;
 import com.upc.fullfeedbackend.models.dto.RegisterPatienceRequestDTO;
@@ -99,6 +100,10 @@ public class UserService {
         patience.setWeight(request.getWeight());
         patience.setTmb(request.getTmb());
         patience.setUser(user);
+
+
+        Preferences preferences = new Preferences();
+
 
         try {
             user = userRepository.save(user);

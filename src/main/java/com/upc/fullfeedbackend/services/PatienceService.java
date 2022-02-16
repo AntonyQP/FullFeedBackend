@@ -17,4 +17,8 @@ public class PatienceService {
         return patienceRepository.findAll();
     }
 
+    public Patience updatePatience(Patience patience){
+        return patienceRepository.save(patience);
+    }
+
 }

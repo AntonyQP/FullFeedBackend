@@ -1,15 +1,19 @@
 package com.upc.fullfeedbackend.models.dto;
 
+import com.upc.fullfeedbackend.models.Preferences;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class RegisterPatienceRequestDTO {
+
+    //User Data
     private String username;
     private String email;
     private String password;
@@ -22,11 +26,15 @@ public class RegisterPatienceRequestDTO {
     private Date registerDate;
     private String rol = "p";
 
+    //Patience Data
     private float height;
     private float weight;
     private float imc;
     private float arm;
     private float abdominal;
     private float tmb;
+
+    //Preferences Data
+    private List<PreferencesDTO> preferencesList;
 
 }

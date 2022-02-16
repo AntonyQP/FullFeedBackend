@@ -21,19 +21,14 @@ public class Patience {
     private Long patienceId;
 
     private float height;
-
     private float weight;
-
     private float imc;
-
     private float arm;
-
     private float abdominal;
-
     private float tmb;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "userID",nullable = true)
+    @JoinColumn(name = "userId",nullable = true)
     private User user;
 
 }

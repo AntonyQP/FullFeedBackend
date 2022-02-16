@@ -7,21 +7,23 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "doctor")
+@Table(name = "preferences")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Doctor {
+public class Preferences {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long doctorId;
+    private Long preferencesId;
 
-    private String licenseNumber;
+    @Column(length = 100)
+    private String name;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId",nullable = true)
-    private User user;
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "categoryId",nullable = true)
+    private Category category;
+
 
 }
