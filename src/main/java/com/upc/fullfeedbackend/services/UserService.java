@@ -1,25 +1,26 @@
 package com.upc.fullfeedbackend.services;
 
 import com.upc.fullfeedbackend.models.Doctor;
-import com.upc.fullfeedbackend.models.Patience;
+import com.upc.fullfeedbackend.models.Patient;
 import com.upc.fullfeedbackend.models.Preferences;
 import com.upc.fullfeedbackend.models.User;
 import com.upc.fullfeedbackend.models.dto.RegisterDoctorRequestDTO;
-import com.upc.fullfeedbackend.models.dto.RegisterPatienceRequestDTO;
+import com.upc.fullfeedbackend.models.dto.RegisterPatientRequestDTO;
 import com.upc.fullfeedbackend.repositories.DoctorRepository;
-import com.upc.fullfeedbackend.repositories.PatienceRepository;
+import com.upc.fullfeedbackend.repositories.PatientRepository;
 import com.upc.fullfeedbackend.repositories.UserRepository;
 import com.upc.fullfeedbackend.util.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.print.Doc;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.upc.fullfeedbackend.util.Encryption.createSecretKey;
@@ -34,7 +35,7 @@ public class UserService {
     DoctorRepository doctorRepository;
 
     @Autowired
-    PatienceRepository patienceRepository;
+    PatientRepository patientRepository;
 
     public User saveUser(User user){
         return userRepository.save(user);
@@ -49,7 +50,15 @@ public class UserService {
         User user = new User();
         user.setDni(request.getDni());
         user.setEmail(request.getEmail());
-        user.setRegisterDate(request.getRegisterDate());
+
+        //Cambiar cuando se suba a Azure
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.HOUR_OF_DAY, -5);
+        user.setRegisterDate(calendar.getTime());
+
+        //user.setRegisterDate(request.getRegisterDate());
+
         user.setBirthDate(request.getBirthDate());
         user.setLastName(request.getLastName());
         user.setFirstName(request.getFirstName());
@@ -77,12 +86,21 @@ public class UserService {
     }
 
 
-    public Patience savePatience(RegisterPatienceRequestDTO request){
+    public Patient savePatient(RegisterPatientRequestDTO request){
 
         User user = new User();
         user.setDni(request.getDni());
         user.setEmail(request.getEmail());
-        user.setRegisterDate(request.getRegisterDate());
+
+        //Cambiar cuando se suba a Azure
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.HOUR_OF_DAY, -5);
+        user.setRegisterDate(calendar.getTime());
+
+        //user.setRegisterDate(request.getRegisterDate());
+
+
         user.setBirthDate(request.getBirthDate());
         user.setLastName(request.getLastName());
         user.setFirstName(request.getFirstName());
@@ -93,13 +111,13 @@ public class UserService {
         String newPassword = EncriptarContrasena(request.getPassword());
         user.setPassword(newPassword);
 
-        Patience patience = new Patience();
-        patience.setAbdominal(request.getAbdominal());
-        patience.setArm(request.getArm());
-        patience.setHeight(request.getHeight());
-        patience.setImc(request.getImc());
-        patience.setWeight(request.getWeight());
-        patience.setTmb(request.getTmb());
+        Patient patient = new Patient();
+        patient.setAbdominal(request.getAbdominal());
+        patient.setArm(request.getArm());
+        patient.setHeight(request.getHeight());
+        patient.setImc(request.getImc());
+        patient.setWeight(request.getWeight());
+        patient.setTmb(request.getTmb());
 
 
 
@@ -108,13 +126,13 @@ public class UserService {
 
         try {
             user = userRepository.save(user);
-            patience.setUser(user);
-            patience = patienceRepository.save(patience);
+            patient.setUser(user);
+            patient = patientRepository.save(patient);
         }catch (Exception e){
             e.getMessage();
         }
 
-        return patience;
+        return patient;
     }
 
     public String  EncriptarContrasena (String contrasena){

@@ -1,11 +1,10 @@
 package com.upc.fullfeedbackend.controllers;
 
 import com.upc.fullfeedbackend.models.Doctor;
-import com.upc.fullfeedbackend.models.Patience;
+import com.upc.fullfeedbackend.models.Patient;
 import com.upc.fullfeedbackend.models.User;
 import com.upc.fullfeedbackend.models.dto.*;
 import com.upc.fullfeedbackend.services.UserService;
-import com.upc.fullfeedbackend.util.Encryption;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.ws.Response;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.upc.fullfeedbackend.util.Encryption.createSecretKey;
 
 @RestController
 @RequestMapping("/user")
@@ -66,9 +56,9 @@ public class UserController {
     }
 
 
-    @PostMapping("/patience")
-    private ResponseEntity<ResponseDTO<Patience>> registerPatience(@RequestBody RegisterPatienceRequestDTO request) {
-        ResponseDTO<Patience> registerResponseDTO = new ResponseDTO<>();
+    @PostMapping("/patient")
+    private ResponseEntity<ResponseDTO<Patient>> registerPatient(@RequestBody RegisterPatientRequestDTO request) {
+        ResponseDTO<Patient> registerResponseDTO = new ResponseDTO<>();
 
 
         User existentUser = userService.findByDni(request.getDni());
@@ -84,7 +74,7 @@ public class UserController {
             registerResponseDTO.setErrorCode(0);
             registerResponseDTO.setErrorMessage("");
             registerResponseDTO.setHttpCode(HttpStatus.CREATED.value());
-            registerResponseDTO.setData(userService.savePatience(request));
+            registerResponseDTO.setData(userService.savePatient(request));
 
             return new ResponseEntity<>(registerResponseDTO, HttpStatus.CREATED);
         } catch (Exception e) {

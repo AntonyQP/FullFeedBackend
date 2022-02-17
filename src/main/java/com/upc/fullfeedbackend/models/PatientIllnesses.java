@@ -1,39 +1,30 @@
 package com.upc.fullfeedbackend.models;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+
 
 @Entity
-@Table(name = "personalTreatment")
+@Table(name = "patientIllnesses")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonalTreatments {
+public class PatientIllnesses {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long personalTreatmentId;
+    private Long patientIllnessesId;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "patientId",nullable = false)
     private Patient patient;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "doctorId",nullable = false)
-    private Doctor doctor;
-
-    private Date startDate;
-
-    private Date endDate;
-
-    private Byte active;
-
-
+    @JoinColumn(name = "illnessesId",nullable = false)
+    private Illnesses illnesses;
 
 }

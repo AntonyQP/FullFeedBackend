@@ -8,25 +8,25 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "patiencePreferences")
+@Table(name = "patientPreferences")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatiencePreferences {
+public class PatientPreferences {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long patiencePreferencesId;
+    private Long patientPreferencesId;
 
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "preferencesId",nullable = false)
+    @JoinColumn(name = "preferencesId",nullable = true)
     private Preferences preferences;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "patienceId",nullable = false)
-    private Patience patience;
+    @JoinColumn(name = "patientId",nullable = true)
+    private Patient patient;
 
     //ALLERGY - FAVORITE
     @Column(length = 25)

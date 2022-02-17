@@ -5,26 +5,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
+import java.util.Date;
 
 @Entity
-@Table(name = "patienceIllnesses")
+@Table(name = "patientLog")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatienceIllnesses {
+public class PatientLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long patienceIllnessesId;
+    private Long patientLogId;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "patienceId",nullable = false)
-    private Patience patience;
+    @JoinColumn(name = "patientId",nullable = false)
+    private Patient patient;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "illnessesId",nullable = false)
-    private Illnesses illnesses;
+    private float height;
+    private float weight;
+    private float imc;
+    private float arm;
+    private float abdominal;
+    private float tmb;
+    private Date date;
 
 }

@@ -1,7 +1,6 @@
 package com.upc.fullfeedbackend.models.dto;
 
 
-import com.upc.fullfeedbackend.models.Patience;
 import com.upc.fullfeedbackend.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;

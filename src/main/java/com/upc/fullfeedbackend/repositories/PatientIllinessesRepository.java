@@ -1,11 +1,11 @@
 package com.upc.fullfeedbackend.repositories;
 
-import com.upc.fullfeedbackend.models.PatienceIllnesses;
+import com.upc.fullfeedbackend.models.PatientIllnesses;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PatienceIllinessesRepository extends JpaRepository<PatienceIllnesses, Long> {
+public interface PatientIllinessesRepository extends JpaRepository<PatientIllnesses, Long> {
 
 
 
