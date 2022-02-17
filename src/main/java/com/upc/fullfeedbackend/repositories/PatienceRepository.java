@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PatienceRepository extends JpaRepository<Patience, Long> {
 
-
+    public Patience findByPatienceId(Long patienceId);
 }

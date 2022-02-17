@@ -1,5 +1,7 @@
 package com.upc.fullfeedbackend.controllers;
 
+import com.upc.fullfeedbackend.models.Doctor;
+import com.upc.fullfeedbackend.models.Patience;
 import com.upc.fullfeedbackend.models.User;
 import com.upc.fullfeedbackend.models.dto.*;
 import com.upc.fullfeedbackend.services.UserService;
@@ -35,9 +37,9 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/doctor")
-    public ResponseEntity<RegisterResponseDTO> registerDoctor(@RequestBody RegisterDoctorRequestDTO request) {
+    public ResponseEntity<ResponseDTO<Doctor>> registerDoctor(@RequestBody RegisterDoctorRequestDTO request) {
 
-        RegisterResponseDTO registerResponseDTO = new RegisterResponseDTO();
+        ResponseDTO<Doctor> registerResponseDTO = new ResponseDTO<>();
 
         User existentUser = userService.findByDni(request.getDni());
         if (existentUser != null) {
@@ -65,8 +67,8 @@ public class UserController {
 
 
     @PostMapping("/patience")
-    private ResponseEntity<RegisterResponseDTO> registerPatience(@RequestBody RegisterPatienceRequestDTO request) {
-        RegisterResponseDTO registerResponseDTO = new RegisterResponseDTO();
+    private ResponseEntity<ResponseDTO<Patience>> registerPatience(@RequestBody RegisterPatienceRequestDTO request) {
+        ResponseDTO<Patience> registerResponseDTO = new ResponseDTO<>();
 
 
         User existentUser = userService.findByDni(request.getDni());

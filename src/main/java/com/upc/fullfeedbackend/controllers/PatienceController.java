@@ -2,14 +2,19 @@ package com.upc.fullfeedbackend.controllers;
 
 import com.upc.fullfeedbackend.models.Patience;
 import com.upc.fullfeedbackend.models.PatienceLog;
+import com.upc.fullfeedbackend.models.PatiencePreferences;
+import com.upc.fullfeedbackend.models.dto.PreferencesDTO;
 import com.upc.fullfeedbackend.models.dto.ResponseDTO;
 import com.upc.fullfeedbackend.services.PatienceLogService;
+import com.upc.fullfeedbackend.services.PatiencePreferencesService;
 import com.upc.fullfeedbackend.services.PatienceService;
+import com.upc.fullfeedbackend.services.PreferencesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +28,12 @@ public class PatienceController {
 
     @Autowired
     PatienceLogService patienceLogService;
+
+    @Autowired
+    PatiencePreferencesService patiencePreferencesService;
+
+    @Autowired
+    PreferencesService preferencesService;
 
     @GetMapping()
     public List<Patience> getAllPatiences() {
@@ -88,5 +99,35 @@ public class PatienceController {
 
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/preferences")
+    public ResponseEntity<ResponseDTO<List<PatiencePreferences>>> savePreferences(@RequestParam Long pacienteId, @RequestBody List<PreferencesDTO> preferencesDTOList){
+        List<PatiencePreferences> patiencePreferencesList = new ArrayList<PatiencePreferences>();
+
+        Patience patience = patienceService.getPatienceById(pacienteId);
+
+        ResponseDTO<List<PatiencePreferences>> responseDTO = new ResponseDTO<>();
+
+        try {
+            for ( PreferencesDTO preferences: preferencesDTOList) {
+                PatiencePreferences patiencePreferences = new PatiencePreferences();
+                patiencePreferences.setPatience(patience);
+                patiencePreferences.setPreferences(preferencesService.findByPreferences(preferences.getNombre()));
+                patiencePreferences.setType(preferences.getType());
+                patiencePreferencesList.add(patiencePreferences);
+            }
+            responseDTO.setData(patiencePreferencesService.savePatiencePreferences(patiencePreferencesList));
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
+
 
 }

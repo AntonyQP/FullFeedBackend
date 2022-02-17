@@ -15,5 +15,5 @@ public class PreferencesDTO {
     private String nombre;
 
     @Column(length = 25)
-    private String tipo;
+    private String type;
 }

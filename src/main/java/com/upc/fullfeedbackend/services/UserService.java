@@ -45,7 +45,7 @@ public class UserService {
     }
 
 
-    public User saveDoctor(RegisterDoctorRequestDTO request){
+    public Doctor saveDoctor(RegisterDoctorRequestDTO request){
         User user = new User();
         user.setDni(request.getDni());
         user.setEmail(request.getEmail());
@@ -66,17 +66,18 @@ public class UserService {
 
         try {
             user = userRepository.save(user);
+            doctor.setUser(user);
             doctor = doctorRepository.save(doctor);
         }catch (Exception e){
             e.getMessage();
         }
 
-        return user;
+        return doctor;
 
     }
 
 
-    public User savePatience(RegisterPatienceRequestDTO request){
+    public Patience savePatience(RegisterPatienceRequestDTO request){
 
         User user = new User();
         user.setDni(request.getDni());
@@ -99,7 +100,7 @@ public class UserService {
         patience.setImc(request.getImc());
         patience.setWeight(request.getWeight());
         patience.setTmb(request.getTmb());
-        patience.setUser(user);
+
 
 
         Preferences preferences = new Preferences();
@@ -107,12 +108,13 @@ public class UserService {
 
         try {
             user = userRepository.save(user);
+            patience.setUser(user);
             patience = patienceRepository.save(patience);
         }catch (Exception e){
             e.getMessage();
         }
 
-        return user;
+        return patience;
     }
 
     public String  EncriptarContrasena (String contrasena){

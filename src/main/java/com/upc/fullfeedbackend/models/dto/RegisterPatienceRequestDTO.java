@@ -33,8 +33,4 @@ public class RegisterPatienceRequestDTO {
     private float arm;
     private float abdominal;
     private float tmb;
-
-    //Preferences Data
-    private List<PreferencesDTO> preferencesList;
-
 }

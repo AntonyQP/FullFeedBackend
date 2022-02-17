@@ -21,4 +21,8 @@ public class PatienceService {
         return patienceRepository.save(patience);
     }
 
+    public Patience getPatienceById(Long patienceId){
+        return patienceRepository.findByPatienceId(patienceId);
+    }
+
 }
