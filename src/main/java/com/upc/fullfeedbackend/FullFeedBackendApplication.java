@@ -35,7 +35,8 @@ public class FullFeedBackendApplication {
             http.csrf().disable()
                     .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
-                    .antMatchers("/user/**","/paciente/**","/hospital/**", "/swagger-resources/**",                            "/swagger-ui.html",
+                    .antMatchers("/user/**","/paciente/**","/hospital/**", "/swagger-resources/**", "/preferences",
+                            "/swagger-ui.html",
                             "/v2/api-docs",
                             "/webjars/**").permitAll()
                     .anyRequest().authenticated();
