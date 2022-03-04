@@ -20,13 +20,10 @@ public class NutritionalPlan {
     @Column(unique = true, nullable = false)
     private Long nutritionalPlanId;
 
-
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "personalTreatmentsId",nullable = false)
     private PersonalTreatments personalTreatments;
 
     private Date mealDate;
-
-
 
 }

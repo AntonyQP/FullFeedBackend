@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @SpringBootApplication
-public class FullFeedBackendApplication {
+public class FullFeedBackendApplication{
 
     public static void main(String[] args) {
         SpringApplication.run(FullFeedBackendApplication.class, args);
@@ -19,9 +19,6 @@ public class FullFeedBackendApplication {
     @EnableWebSecurity
     @Configuration
     class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-
-
 
         //        @Override
 //        public void configure(WebSecurity web) throws Exception {
@@ -38,7 +35,7 @@ public class FullFeedBackendApplication {
                     .antMatchers("/user/**","/paciente/**","/hospital/**", "/swagger-resources/**", "/preferences",
                             "/swagger-ui.html",
                             "/v2/api-docs",
-                            "/webjars/**").permitAll()
+                            "/webjars/**", "/meal/**").permitAll()
                     .anyRequest().authenticated();
         }
     }

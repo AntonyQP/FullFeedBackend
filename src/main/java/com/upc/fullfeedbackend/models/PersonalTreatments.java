@@ -34,6 +34,4 @@ public class PersonalTreatments {
 
     private Byte active;
 
-
-
 }

@@ -1,10 +1,13 @@
 package com.upc.fullfeedbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "meal")
@@ -18,12 +21,28 @@ public class Meal {
     @Column(unique = true, nullable = false)
     private Long mealId;
 
+
+    @JsonIgnore
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "nutritionalPlanId",nullable = false)
+    private NutritionalPlan nutritionalPlan;
+
+    private Date day;
+
+    private String schedule;
+
     private String name;
 
-    private float carbohydrateKcal;
+    private double protein;
 
-    private float proteinKcal;
+    private double fat;
 
-    private float fatKcal;
+    private double carbohydrates;
+
+    private String ingredients;
+
+    private double totalCalories;
+
+    private double gramsPortion;
 
 }

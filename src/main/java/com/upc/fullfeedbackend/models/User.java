@@ -40,6 +40,7 @@ public class User {
 
     private String phone;
 
+    //h-m
     @Column(length = 1, nullable = false)
     private String sex;
 
@@ -47,7 +48,7 @@ public class User {
     private String dni;
 
     private Date registerDate;
-
+    //d-p
     @Column(length = 1, nullable = false)
     private String rol;
 

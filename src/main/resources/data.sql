@@ -15,3 +15,12 @@ INSERT INTO preferences (`name`,`category_id`) VALUES ('Pavo', 14);
 INSERT INTO preferences (`name`,`category_id`) VALUES ('Cerdo', 14);
 INSERT INTO preferences (`name`,`category_id`) VALUES ('Jamon', 14);
 INSERT INTO preferences (`name`,`category_id`) VALUES ('Tofu', 54);
+
+
+
+INSERT INTO personal_treatment(`active`, `end_date`, `start_date`, `doctor_id`, `patient_id`)
+VALUES (1,now(),now(), 4,4);
+
+
+INSERT INTO nutritional_plan (`meal_date`, `personal_treatments_id`)
+VALUES (now(), 4);

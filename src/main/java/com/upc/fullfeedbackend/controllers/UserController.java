@@ -1,22 +1,22 @@
 package com.upc.fullfeedbackend.controllers;
 
-import com.upc.fullfeedbackend.models.Doctor;
-import com.upc.fullfeedbackend.models.Patient;
-import com.upc.fullfeedbackend.models.User;
+import com.upc.fullfeedbackend.models.*;
+import com.upc.fullfeedbackend.models.api.ApiRequest;
+import com.upc.fullfeedbackend.models.api.Dish;
 import com.upc.fullfeedbackend.models.dto.*;
+import com.upc.fullfeedbackend.services.MealService;
 import com.upc.fullfeedbackend.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,6 +25,12 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+
+    @GetMapping("/test")
+    public List<Meal> getDishesForWeek() throws IOException {
+        return null;
+    }
 
     @PostMapping("/doctor")
     public ResponseEntity<ResponseDTO<Doctor>> registerDoctor(@RequestBody RegisterDoctorRequestDTO request) {
