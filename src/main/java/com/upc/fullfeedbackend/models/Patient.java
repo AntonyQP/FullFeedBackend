@@ -25,6 +25,7 @@ public class Patient {
     private float arm;
     private float abdominal;
     private float tmb;
+    private int age;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "userId",nullable = true)

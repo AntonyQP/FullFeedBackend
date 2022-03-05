@@ -21,7 +21,6 @@ public class RegisterPatientRequestDTO {
     private String phone;
     private String sex;
     private String dni;
-    private Date registerDate;
     private String rol = "p";
 
     //Patient Data

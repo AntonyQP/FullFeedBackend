@@ -41,7 +41,7 @@ public class UserController {
         if (existentUser != null) {
             registerResponseDTO.setErrorCode(1);
             registerResponseDTO.setErrorMessage("El doctor ya se encuentra registrado");
-            registerResponseDTO.setHttpCode(200);
+            registerResponseDTO.setHttpCode(HttpStatus.OK.value());
             registerResponseDTO.setData(null);
 
             return new ResponseEntity<>(registerResponseDTO, HttpStatus.OK) ;
@@ -86,6 +86,11 @@ public class UserController {
         } catch (Exception e) {
             e.getMessage();
         }
+
+        registerResponseDTO.setErrorCode(2);
+        registerResponseDTO.setErrorMessage("Ocurrio un problema al registrar al usuario");
+        registerResponseDTO.setHttpCode(HttpStatus.OK.value());
+        registerResponseDTO.setData(null);
 
         return new ResponseEntity<>(registerResponseDTO, HttpStatus.OK) ;
     }

@@ -35,7 +35,7 @@ public class FullFeedBackendApplication{
                     .antMatchers("/user/**","/paciente/**","/hospital/**", "/swagger-resources/**", "/preferences",
                             "/swagger-ui.html",
                             "/v2/api-docs",
-                            "/webjars/**", "/meal/**").permitAll()
+                            "/webjars/**", "/meal/**", "/nutritionalPlan/**" ).permitAll()
                     .anyRequest().authenticated();
         }
     }

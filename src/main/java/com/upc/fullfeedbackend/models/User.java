@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class User {
     private String sex;
 
     @Column(length = 8)
-    private String dni;
+    private String dni = "";
 
     private Date registerDate;
     //d-p

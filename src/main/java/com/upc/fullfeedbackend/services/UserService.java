@@ -19,6 +19,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -118,11 +120,7 @@ public class UserService {
         patient.setImc(request.getImc());
         patient.setWeight(request.getWeight());
         patient.setTmb(request.getTmb());
-
-
-
-        Preferences preferences = new Preferences();
-
+        patient.setAge(HallarEdadActual(request.getBirthDate()));
 
         try {
             user = userRepository.save(user);
@@ -133,6 +131,20 @@ public class UserService {
         }
 
         return patient;
+    }
+
+
+    public Integer HallarEdadActual(Date date){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+
+        int y = c.get(Calendar.YEAR);
+        int m = c.get(Calendar.MONTH) + 1 ;
+        int d = c.get(Calendar.DAY_OF_MONTH);
+
+        LocalDate now = LocalDate.now();
+        Period age = Period.between(LocalDate.of(y,m,d), now);
+        return  age.getYears();
     }
 
     public String  EncriptarContrasena (String contrasena){

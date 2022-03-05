@@ -24,6 +24,10 @@ public class NutritionalPlan {
     @JoinColumn(name = "personalTreatmentsId",nullable = false)
     private PersonalTreatments personalTreatments;
 
-    private Date mealDate;
+    private double caloriesPlan;
+
+    private double weightPatient;
+
+    private Byte isActive;
 
 }

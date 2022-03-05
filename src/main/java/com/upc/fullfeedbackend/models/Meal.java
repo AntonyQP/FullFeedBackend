@@ -21,7 +21,6 @@ public class Meal {
     @Column(unique = true, nullable = false)
     private Long mealId;
 
-
     @JsonIgnore
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "nutritionalPlanId",nullable = false)

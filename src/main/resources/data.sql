@@ -22,5 +22,9 @@ INSERT INTO personal_treatment(`active`, `end_date`, `start_date`, `doctor_id`, 
 VALUES (1,now(),now(), 4,4);
 
 
-INSERT INTO nutritional_plan (`meal_date`, `personal_treatments_id`)
-VALUES (now(), 4);
+
+INSERT INTO nutritional_plan (`meal_date`,`personal_treatments_id`,`is_active`)
+VALUES (now(),4,0);
+
+
+SET FOREIGN_KEY_CHECKS=0;

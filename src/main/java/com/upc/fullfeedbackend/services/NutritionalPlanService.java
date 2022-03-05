@@ -15,4 +15,26 @@ public class NutritionalPlanService {
     public NutritionalPlan getNutritionalPlanById(Long nutritionalPlanId){
         return nutritionalPlanRepository.findById(nutritionalPlanId).get();
     }
+
+    public NutritionalPlan getNutritionalPlanByPatientId(Long patientId){
+        byte active = 1;
+        return nutritionalPlanRepository.findByPersonalTreatments_Patient_PatientIdAndAndIsActive(patientId, active);
+    }
+
+    public NutritionalPlan updateNutritionalPlan(NutritionalPlan nutritionalPlan){
+        return nutritionalPlanRepository.save(nutritionalPlan);
+    }
+
+    public NutritionalPlan createNutritionalPlan(NutritionalPlan nutritionalPlan){
+        Long patientId = nutritionalPlan.getPersonalTreatments().getPatient().getPatientId();
+        NutritionalPlan lastNutritionalPlan = getNutritionalPlanByPatientId(patientId);
+        if (lastNutritionalPlan != null){
+            byte desactived = 0;
+            lastNutritionalPlan.setIsActive(desactived);
+            updateNutritionalPlan(lastNutritionalPlan);
+        }
+        return nutritionalPlanRepository.save(nutritionalPlan);
+
+    }
+
 }
