@@ -22,6 +22,7 @@ import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import static com.upc.fullfeedbackend.util.Encryption.createSecretKey;
 
@@ -56,8 +57,11 @@ public class UserService {
 
         //Cambiar cuando se suba a Azure
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
         calendar.setTime(new Date());
-        calendar.add(Calendar.HOUR_OF_DAY, -5);
+        //calendar.add(Calendar.HOUR_OF_DAY, -5);
+
+
         user.setRegisterDate(calendar.getTime());
 
         //user.setRegisterDate(request.getRegisterDate());
@@ -96,8 +100,9 @@ public class UserService {
 
         //Cambiar cuando se suba a Azure
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
         calendar.setTime(new Date());
-        calendar.add(Calendar.HOUR_OF_DAY, -5);
+        //calendar.add(Calendar.HOUR_OF_DAY, -5);
         user.setRegisterDate(calendar.getTime());
 
         //user.setRegisterDate(request.getRegisterDate());

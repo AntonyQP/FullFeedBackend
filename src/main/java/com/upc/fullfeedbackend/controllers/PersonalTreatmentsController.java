@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.print.Doc;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 @RestController
 @RequestMapping("/personalTreatments")
@@ -79,7 +80,8 @@ public class PersonalTreatmentsController {
         //Cambiar cuando se suba a Azure
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.HOUR_OF_DAY, -5);
+        calendar.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
+        //calendar.add(Calendar.HOUR_OF_DAY, -5);
 
 
 

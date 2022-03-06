@@ -4,13 +4,12 @@ import com.upc.fullfeedbackend.models.Meal;
 import com.upc.fullfeedbackend.models.NutritionalPlan;
 import com.upc.fullfeedbackend.models.api.ApiRequest;
 import com.upc.fullfeedbackend.models.api.Dish;
+import com.upc.fullfeedbackend.models.dto.ResponseDTO;
 import com.upc.fullfeedbackend.services.MealService;
 import com.upc.fullfeedbackend.services.NutritionalPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -44,7 +43,7 @@ public class MealController {
         return mealService.getMealsByDay(normalizeDate(date));
     }
 
-    @GetMapping("/week-meals")
+    @GetMapping("/diet-meals")
     private List<Meal> getMealsInTheWeek(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                          @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
                                          @RequestParam Long patientId){
@@ -54,6 +53,30 @@ public class MealController {
 
         return  mealService.getMealsBetweenDatesAndNutritionalPlan(sd, ed, nutritionalPlan);
     }
+
+    @PutMapping("/completeMeal")
+    private ResponseEntity<ResponseDTO<Meal>> completeMeal(@RequestParam Long mealId){
+        ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
+
+        try {
+            Meal meal = mealService.getMealByID(mealId);
+            meal.setStatus((byte) 1);
+            meal = mealService.saveMeal(meal);
+
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(meal);
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
 
 
     private Date normalizeDate(Date dt){
@@ -81,5 +104,8 @@ public class MealController {
         dt = c.getTime();
         return dt;
     }
+
+
+
 
 }

@@ -30,7 +30,7 @@ public class PatientService {
 
 
     public Integer getTotalLostWeightByPatient(Long patientId){
-        return null;
+        return patientRepository.getTotalWeightLoss(patientId);
     }
 
 }

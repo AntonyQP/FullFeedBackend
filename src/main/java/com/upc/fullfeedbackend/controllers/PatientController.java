@@ -9,15 +9,13 @@ import com.upc.fullfeedbackend.models.dto.PreferencesDTO;
 import com.upc.fullfeedbackend.models.dto.PatientProgressDTO;
 import com.upc.fullfeedbackend.models.dto.ResponseDTO;
 import com.upc.fullfeedbackend.services.*;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/patient")
@@ -55,14 +53,23 @@ public class PatientController {
 
         //Cambiar cuando se suba a Amazon
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
         calendar.setTime(new Date());
-        calendar.add(Calendar.HOUR_OF_DAY, -5);
+        //calendar.add(Calendar.HOUR_OF_DAY, -5);
 
         ResponseDTO<Patient> responseDTO = new ResponseDTO<>();
 
         try {
 
                 Patient patient = patientService.getPatientById(patientUpdateDTO.getPatientId());
+
+                patient.setArm(patientUpdateDTO.getArm());
+                patient.setHeight(patientUpdateDTO.getHeight());
+                patient.setImc(patientUpdateDTO.getImc());
+                patient.setTmb(patientUpdateDTO.getTmb());
+                patient.setWeight(patientUpdateDTO.getWeight());
+                patient.setAbdominal(patientUpdateDTO.getAbdominal());
+
 
                 patientLog.setPatient(patient);
                 patientLog.setArm(patientUpdateDTO.getArm());
@@ -189,18 +196,19 @@ public class PatientController {
 
             Integer successfulDays =  mealService.getCountOfSuccessfulDaysByPatient(patientId);
             patientProgressDTO.setSuccessfulDays(successfulDays);
-            patientProgressDTO.setLostWeight(2);
+            Integer totalWeightLost = patientService.getTotalLostWeightByPatient(patientId);
+            patientProgressDTO.setLostWeight(totalWeightLost);
 
             responseDTO.setHttpCode(HttpStatus.OK.value());
             responseDTO.setErrorMessage("");
             responseDTO.setErrorCode(0);
             responseDTO.setData(patientProgressDTO);
 
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
         }catch (Exception e){
             e.getMessage();
         }
-
 
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

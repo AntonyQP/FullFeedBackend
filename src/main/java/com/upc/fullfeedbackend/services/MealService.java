@@ -30,6 +30,13 @@ public class MealService {
         return null;
     }
 
+    public Meal getMealByID(Long mealId){
+        return mealRespository.findById(mealId).get();
+    }
+
+    public Meal saveMeal(Meal meal){
+        return mealRespository.save(meal);
+    }
 
     public List<Meal> generateTwoWeeksMealsForPatient(Long patientId, Integer calories, Integer weight){
 
