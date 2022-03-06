@@ -53,8 +53,8 @@ public class PatientController {
 
         //Cambiar cuando se suba a Amazon
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
         calendar.setTime(new Date());
+        calendar.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
         //calendar.add(Calendar.HOUR_OF_DAY, -5);
 
         ResponseDTO<Patient> responseDTO = new ResponseDTO<>();
