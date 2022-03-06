@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZoneId;
 import java.util.*;
 
 @RestController
@@ -56,7 +57,9 @@ public class PatientController {
         calendar.setTimeZone(TimeZone.getTimeZone("GMT-5"));
         calendar.setTime(new Date());
         calendar.setTimeZone(TimeZone.getTimeZone("GMT-5"));
-        //calendar.add(Calendar.HOUR_OF_DAY, -5);
+        if (calendar.getTimeZone() != TimeZone.getTimeZone("GMT-5")){
+            calendar.add(Calendar.HOUR_OF_DAY, -5);
+        }
 
         ResponseDTO<Patient> responseDTO = new ResponseDTO<>();
 
