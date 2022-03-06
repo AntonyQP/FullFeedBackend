@@ -16,7 +16,7 @@ public class NutritionalPlanService {
         return nutritionalPlanRepository.findById(nutritionalPlanId).get();
     }
 
-    public NutritionalPlan getNutritionalPlanByPatientId(Long patientId){
+    public NutritionalPlan getActiveNutritionalPlanByPatientId(Long patientId){
         byte active = 1;
         return nutritionalPlanRepository.findByPersonalTreatments_Patient_PatientIdAndAndIsActive(patientId, active);
     }
@@ -27,7 +27,7 @@ public class NutritionalPlanService {
 
     public NutritionalPlan createNutritionalPlan(NutritionalPlan nutritionalPlan){
         Long patientId = nutritionalPlan.getPersonalTreatments().getPatient().getPatientId();
-        NutritionalPlan lastNutritionalPlan = getNutritionalPlanByPatientId(patientId);
+        NutritionalPlan lastNutritionalPlan = getActiveNutritionalPlanByPatientId(patientId);
         if (lastNutritionalPlan != null){
             byte desactived = 0;
             lastNutritionalPlan.setIsActive(desactived);

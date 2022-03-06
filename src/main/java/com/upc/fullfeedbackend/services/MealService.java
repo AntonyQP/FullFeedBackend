@@ -5,8 +5,6 @@ import com.upc.fullfeedbackend.models.NutritionalPlan;
 import com.upc.fullfeedbackend.models.api.ApiRequest;
 import com.upc.fullfeedbackend.models.api.Dish;
 import com.upc.fullfeedbackend.repositories.MealRespository;
-import com.upc.fullfeedbackend.repositories.NutritionalPlanRepository;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +31,7 @@ public class MealService {
     }
 
 
-    public List<Meal> generateTwoWeeksMealsForPatient(Long nutritionalPlanId, Integer calories, Integer weight){
+    public List<Meal> generateTwoWeeksMealsForPatient(Long patientId, Integer calories, Integer weight){
 
         String url = "https://fullfeedflask-app.herokuapp.com/diet-week";
 
@@ -52,8 +50,8 @@ public class MealService {
 
         List<Meal> meals = new ArrayList<>();
 
-        //NutritionalPlan nutritionalPlan = nutritionalPlanService.getNutritionalPlanByPatientId(patientId);
-        NutritionalPlan nutritionalPlan = nutritionalPlanService.getNutritionalPlanById(nutritionalPlanId);
+        NutritionalPlan nutritionalPlan = nutritionalPlanService.getActiveNutritionalPlanByPatientId(patientId);
+        //NutritionalPlan nutritionalPlan = nutritionalPlanService.getNutritionalPlanById(nutritionalPlanId);
 
         int indexDay = 1;
         for (Dish[] dishList: dishes) {
@@ -81,7 +79,6 @@ public class MealService {
         return mealRespository.saveAll(meals);
     }
 
-
     private Date getDate(int diaMas){
         Date dt = new Date();
         Calendar c = Calendar.getInstance();
@@ -100,9 +97,12 @@ public class MealService {
         return mealRespository.findByDay(date);
     }
 
-
     public List<Meal> getMealsBetweenDatesAndNutritionalPlan(Date startDate, Date endDate, NutritionalPlan nutritionalPlanService){
         return mealRespository.findByDayIsGreaterThanEqualAndDayIsLessThanEqualAndNutritionalPlan(startDate, endDate, nutritionalPlanService);
+    }
+
+    public Integer getCountOfSuccessfulDaysByPatient(Long patientId){
+        return mealRespository.countByStatusAndNutritionalPlan_PersonalTreatments_Patient_PatientId((byte) 1, patientId);
     }
 
 }

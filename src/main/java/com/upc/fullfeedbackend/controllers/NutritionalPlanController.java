@@ -31,14 +31,54 @@ public class NutritionalPlanController {
     @Autowired
     MealService mealService;
 
+    @GetMapping("")
+    public ResponseEntity<ResponseDTO<NutritionalPlan>> getActiveNutritionalPlan(@RequestParam Long patientId){
+        ResponseDTO<NutritionalPlan>  responseDTO = new ResponseDTO<>();
+        NutritionalPlan nutritionalPlan = new NutritionalPlan();
+
+        try {
+            nutritionalPlan = nutritionalPlanService.getActiveNutritionalPlanByPatientId(patientId);
+
+            if (nutritionalPlan == null){
+                responseDTO.setHttpCode(HttpStatus.OK.value());
+                responseDTO.setErrorCode(1);
+                responseDTO.setErrorMessage("El usuario no tiene un plan nutricional activo");
+                responseDTO.setData(null);
+
+                return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            }
+
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(nutritionalPlan);
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        responseDTO.setHttpCode(HttpStatus.OK.value());
+        responseDTO.setErrorCode(2);
+        responseDTO.setErrorMessage("Ocurrio un error al intentar recuperar el plan nutricional");
+        responseDTO.setData(nutritionalPlan);
+
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+
     @PostMapping("/new")
     public ResponseEntity<ResponseDTO<NutritionalPlanResponseDTO>> createNewNutritionalPlan(@RequestBody NutritionalPlanRequestDTO requestDTO){
 
         NutritionalPlan nutritionalPlan = new NutritionalPlan();
         NutritionalPlanResponseDTO nutritionalPlanResponseDTO = new NutritionalPlanResponseDTO();
         ResponseDTO<NutritionalPlanResponseDTO> responseDTO = new ResponseDTO<>();
+
         try {
-            PersonalTreatments personalTreatments = personalTreatmentsService.getById(requestDTO.getPersonalTreatmentsId());
+
+            PersonalTreatments personalTreatments = personalTreatmentsService.getByPatientIdAndActive(requestDTO.getPatientId());
             byte active = 1;
             nutritionalPlan.setIsActive(active);
             nutritionalPlan.setPersonalTreatments(personalTreatments);

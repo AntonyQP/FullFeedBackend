@@ -16,5 +16,12 @@ public class PersonalTreatmentsService {
         return personalTreatmentsRepository.findById(personalTreatmentId).get();
     }
 
+    public PersonalTreatments getByPatientIdAndActive(Long patientId){
+        return personalTreatmentsRepository.findByPatient_PatientIdAndActive(patientId, (byte) 1);
+    }
+
+    public PersonalTreatments savePersonalTreatments(PersonalTreatments personalTreatments){
+        return personalTreatmentsRepository.save(personalTreatments);
+    }
 
 }

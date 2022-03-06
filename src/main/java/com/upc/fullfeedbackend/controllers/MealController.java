@@ -40,8 +40,8 @@ public class MealController {
 
 
     @GetMapping("/day")
-    private List<Meal> getMealsByDay(){
-        return mealService.getMealsByDay(getDate(1));
+    private List<Meal> getMealsByDay(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
+        return mealService.getMealsByDay(normalizeDate(date));
     }
 
     @GetMapping("/week-meals")
@@ -50,7 +50,7 @@ public class MealController {
                                          @RequestParam Long patientId){
         Date sd = normalizeDate(startDate);
         Date ed = normalizeDate(endDate);
-        NutritionalPlan nutritionalPlan = nutritionalPlanService.getNutritionalPlanByPatientId(patientId);
+        NutritionalPlan nutritionalPlan = nutritionalPlanService.getActiveNutritionalPlanByPatientId(patientId);
 
         return  mealService.getMealsBetweenDatesAndNutritionalPlan(sd, ed, nutritionalPlan);
     }

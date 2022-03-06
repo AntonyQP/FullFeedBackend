@@ -11,7 +11,9 @@ import javax.persistence.ManyToOne;
 @Data
 public class NutritionalPlanRequestDTO {
 
-    private Long personalTreatmentsId;
+    //private Long personalTreatmentsId;
+    private Long patientId;
+
     private double caloriesPlan;
     private double weightPatient;
 }

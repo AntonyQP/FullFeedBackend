@@ -1,10 +1,7 @@
 package com.upc.fullfeedbackend.controllers;
 
 import com.upc.fullfeedbackend.models.*;
-import com.upc.fullfeedbackend.models.api.ApiRequest;
-import com.upc.fullfeedbackend.models.api.Dish;
 import com.upc.fullfeedbackend.models.dto.*;
-import com.upc.fullfeedbackend.services.MealService;
 import com.upc.fullfeedbackend.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,7 +10,6 @@ import org.springframework.http.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.*;

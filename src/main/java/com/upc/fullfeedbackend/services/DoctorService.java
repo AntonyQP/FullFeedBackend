@@ -5,6 +5,7 @@ import com.upc.fullfeedbackend.repositories.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.List;
 
 @Service
@@ -15,6 +16,10 @@ public class DoctorService {
 
     public List<Doctor> getAllDoctors(){
         return doctorRepository.findAll();
+    }
+
+    public Doctor getDoctorById(Long doctorId){
+        return doctorRepository.findById(doctorId).get();
     }
 
 }

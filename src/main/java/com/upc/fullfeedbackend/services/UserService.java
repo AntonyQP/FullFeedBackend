@@ -1,12 +1,10 @@
 package com.upc.fullfeedbackend.services;
 
-import com.upc.fullfeedbackend.models.Doctor;
-import com.upc.fullfeedbackend.models.Patient;
-import com.upc.fullfeedbackend.models.Preferences;
-import com.upc.fullfeedbackend.models.User;
+import com.upc.fullfeedbackend.models.*;
 import com.upc.fullfeedbackend.models.dto.RegisterDoctorRequestDTO;
 import com.upc.fullfeedbackend.models.dto.RegisterPatientRequestDTO;
 import com.upc.fullfeedbackend.repositories.DoctorRepository;
+import com.upc.fullfeedbackend.repositories.PatientLogRepository;
 import com.upc.fullfeedbackend.repositories.PatientRepository;
 import com.upc.fullfeedbackend.repositories.UserRepository;
 import com.upc.fullfeedbackend.util.Encryption;
@@ -38,6 +36,9 @@ public class UserService {
 
     @Autowired
     PatientRepository patientRepository;
+
+    @Autowired
+    PatientLogRepository patientLogRepository;
 
     public User saveUser(User user){
         return userRepository.save(user);
@@ -87,7 +88,6 @@ public class UserService {
 
     }
 
-
     public Patient savePatient(RegisterPatientRequestDTO request){
 
         User user = new User();
@@ -122,10 +122,21 @@ public class UserService {
         patient.setTmb(request.getTmb());
         patient.setAge(HallarEdadActual(request.getBirthDate()));
 
+        PatientLog patientLog = new PatientLog();
+        patientLog.setAbdominal(request.getAbdominal());
+        patientLog.setArm(request.getArm());
+        patientLog.setHeight(request.getHeight());
+        patientLog.setImc(request.getImc());
+        patientLog.setWeight(request.getWeight());
+        patientLog.setTmb(request.getTmb());
+        patientLog.setDate(calendar.getTime());
+
         try {
             user = userRepository.save(user);
             patient.setUser(user);
             patient = patientRepository.save(patient);
+            patientLog.setPatient(patient);
+            patientLog = patientLogRepository.save(patientLog);
         }catch (Exception e){
             e.getMessage();
         }

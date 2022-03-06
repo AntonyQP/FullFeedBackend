@@ -1,14 +1,14 @@
 package com.upc.fullfeedbackend.controllers;
 
+import com.upc.fullfeedbackend.models.Meal;
 import com.upc.fullfeedbackend.models.Patient;
 import com.upc.fullfeedbackend.models.PatientLog;
 import com.upc.fullfeedbackend.models.PatientPreferences;
+import com.upc.fullfeedbackend.models.dto.PatientUpdateDTO;
 import com.upc.fullfeedbackend.models.dto.PreferencesDTO;
+import com.upc.fullfeedbackend.models.dto.PatientProgressDTO;
 import com.upc.fullfeedbackend.models.dto.ResponseDTO;
-import com.upc.fullfeedbackend.services.PatientLogService;
-import com.upc.fullfeedbackend.services.PatientPreferencesService;
-import com.upc.fullfeedbackend.services.PatientService;
-import com.upc.fullfeedbackend.services.PreferencesService;
+import com.upc.fullfeedbackend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +35,9 @@ public class PatientController {
     @Autowired
     PreferencesService preferencesService;
 
+    @Autowired
+    MealService mealService;
+
     @GetMapping()
     public List<Patient> getAllPatients() {
         return patientService.getAllPatients();
@@ -46,7 +49,7 @@ public class PatientController {
     }
 
     @PutMapping("/updatePatient")
-    public ResponseEntity<ResponseDTO<Patient>> updatePatient(@RequestBody Patient patient){
+    public ResponseEntity<ResponseDTO<Patient>> updatePatient(@RequestBody PatientUpdateDTO patientUpdateDTO){
 
         PatientLog patientLog = new PatientLog();
 
@@ -58,14 +61,17 @@ public class PatientController {
         ResponseDTO<Patient> responseDTO = new ResponseDTO<>();
 
         try {
+
+                Patient patient = patientService.getPatientById(patientUpdateDTO.getPatientId());
+
                 patientLog.setPatient(patient);
-                patientLog.setArm(patient.getArm());
+                patientLog.setArm(patientUpdateDTO.getArm());
                 patientLog.setDate(calendar.getTime());
-                patientLog.setHeight(patient.getHeight());
-                patientLog.setImc(patient.getImc());
-                patientLog.setTmb(patient.getTmb());
-                patientLog.setWeight(patient.getWeight());
-                patientLog.setAbdominal(patient.getAbdominal());
+                patientLog.setHeight(patientUpdateDTO.getHeight());
+                patientLog.setImc(patientUpdateDTO.getImc());
+                patientLog.setTmb(patientUpdateDTO.getTmb());
+                patientLog.setWeight(patientUpdateDTO.getWeight());
+                patientLog.setAbdominal(patientUpdateDTO.getAbdominal());
 
                 patientLogService.savePatientLog(patientLog);
 
@@ -171,6 +177,32 @@ public class PatientController {
         }
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("/successfulDays")
+    public ResponseEntity<ResponseDTO<PatientProgressDTO>> getProgressbyPatient(@RequestParam Long patientId){
+        ResponseDTO<PatientProgressDTO> responseDTO = new ResponseDTO<>();
+        PatientProgressDTO patientProgressDTO = new PatientProgressDTO();
+        try {
+
+            Integer successfulDays =  mealService.getCountOfSuccessfulDaysByPatient(patientId);
+            patientProgressDTO.setSuccessfulDays(successfulDays);
+            patientProgressDTO.setLostWeight(2);
+
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorMessage("");
+            responseDTO.setErrorCode(0);
+            responseDTO.setData(patientProgressDTO);
+
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
 }

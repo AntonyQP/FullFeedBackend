@@ -44,4 +44,9 @@ public class Meal {
 
     private double gramsPortion;
 
+    private String imageUrl;
+
+    //0 - Created, 1 - Ok, 2 - Failed.
+    private Byte status;
+
 }

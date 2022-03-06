@@ -32,10 +32,10 @@ public class FullFeedBackendApplication{
             http.csrf().disable()
                     .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
-                    .antMatchers("/user/**","/paciente/**","/hospital/**", "/swagger-resources/**", "/preferences",
+                    .antMatchers("/user/**","/patient/**","/hospital/**", "/swagger-resources/**", "/preferences",
                             "/swagger-ui.html",
                             "/v2/api-docs",
-                            "/webjars/**", "/meal/**", "/nutritionalPlan/**" ).permitAll()
+                            "/webjars/**", "/meal/**", "/nutritionalPlan/**", "/personalTreatments","/personalTreatments/**").permitAll()
                     .anyRequest().authenticated();
         }
     }
