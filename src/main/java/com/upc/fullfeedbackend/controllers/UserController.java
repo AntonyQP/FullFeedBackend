@@ -31,11 +31,6 @@ public class UserController {
     DoctorService doctorService;
 
 
-    @GetMapping("/test")
-    public List<Meal> getDishesForWeek() throws IOException {
-        return null;
-    }
-
     @PostMapping("/doctor")
     public ResponseEntity<ResponseDTO<Doctor>> registerDoctor(@RequestBody RegisterDoctorRequestDTO request) {
 

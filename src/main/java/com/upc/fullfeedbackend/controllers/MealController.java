@@ -2,6 +2,7 @@ package com.upc.fullfeedbackend.controllers;
 
 import com.upc.fullfeedbackend.models.Meal;
 import com.upc.fullfeedbackend.models.NutritionalPlan;
+import com.upc.fullfeedbackend.models.api.ApiAlternativesRequest;
 import com.upc.fullfeedbackend.models.api.ApiRequest;
 import com.upc.fullfeedbackend.models.api.Dish;
 import com.upc.fullfeedbackend.models.dto.ResponseDTO;
@@ -11,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -124,7 +124,60 @@ public class MealController {
     }
 
 
+    @PostMapping("/alternativeMeals")
+    private ResponseEntity<ResponseDTO<List<Meal>>> getAlternativeMeals(@RequestBody ApiAlternativesRequest request){
+            ResponseDTO<List<Meal>> responseDTO = new ResponseDTO<>();
+
+            try {
+                responseDTO.setHttpCode(HttpStatus.OK.value());
+                responseDTO.setErrorCode(0);
+                responseDTO.setErrorMessage("");
+                responseDTO.setData(mealService.generateAlternativesMeal(request));
+
+                return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+            }catch (Exception e){
+                e.getMessage();
+            }
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+    }
+
+    @PutMapping("/replaceMeal")
+    private ResponseEntity<ResponseDTO<Meal>> replaceAlterantiveMeal(@RequestBody Meal requestMeal){
+
+        ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
+
+        try {
+
+            Meal originalMeal = mealService.getMealByID(requestMeal.getMealId());
+
+            originalMeal.setName(requestMeal.getName());
+            originalMeal.setIngredients(requestMeal.getIngredients());
+            originalMeal.setFat(requestMeal.getFat());
+            originalMeal.setProtein(requestMeal.getProtein());
+            originalMeal.setCarbohydrates(requestMeal.getCarbohydrates());
+            originalMeal.setGramsPortion(requestMeal.getGramsPortion());
+            originalMeal.setImageUrl(requestMeal.getImageUrl());
+            originalMeal.setTotalCalories(requestMeal.getTotalCalories());
+
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(mealService.saveMeal(originalMeal));
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     private Date normalizeDate(Date dt){
+
         Calendar c = Calendar.getInstance();
         c.setTime(dt);
         c.set(Calendar.HOUR, 0);

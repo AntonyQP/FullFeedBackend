@@ -3,6 +3,7 @@ package com.upc.fullfeedbackend.services;
 import com.upc.fullfeedbackend.models.Meal;
 import com.upc.fullfeedbackend.models.NutritionalPlan;
 import com.upc.fullfeedbackend.models.Patient;
+import com.upc.fullfeedbackend.models.api.ApiAlternativesRequest;
 import com.upc.fullfeedbackend.models.api.ApiRequest;
 import com.upc.fullfeedbackend.models.api.Dish;
 import com.upc.fullfeedbackend.repositories.MealRespository;
@@ -70,6 +71,7 @@ public class MealService {
         int indexDay = 1;
         for (Dish[] dishList: dishes) {
             for (Dish dish: dishList) {
+
                 Meal meal = new Meal();
                 meal.setSchedule(dish.getHorario());
                 meal.setName(dish.getNombre());
@@ -118,6 +120,43 @@ public class MealService {
 
     public Integer getCountOfSuccessfulDaysByPatient(Long patientId){
         return mealRespository.countByStatusAndNutritionalPlan_PersonalTreatments_Patient_PatientId((byte) 1, patientId);
+    }
+
+    public List<Meal> generateAlternativesMeal(ApiAlternativesRequest request){
+        String url = "https://fullfeedflask-app.herokuapp.com/alternatives";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        request.setCalories(request.getCalories());
+        request.setSchedule(request.getSchedule());
+
+        HttpEntity<ApiAlternativesRequest> httpEntity = new HttpEntity<>(request, headers);
+
+        Dish[] dishes = restTemplate.postForObject(url, httpEntity, Dish[].class);
+
+        List<Meal> meals = new ArrayList<>();
+        for (Dish dish: dishes) {
+            Meal meal = new Meal();
+            meal.setName(dish.getNombre());
+            meal.setProtein(dish.getProteinas());
+            meal.setFat(dish.getGrasas());
+            meal.setCarbohydrates(dish.getCarbohidratos());
+            meal.setStatus((byte) 0);
+            meal.setTotalCalories(dish.getCalorias_totales());
+            meal.setGramsPortion(dish.getPorcion_gramos());
+            meal.setSchedule(dish.getHorario());
+
+            String result = String.join("-", dish.getIngredientes());
+            meal.setIngredients(result);
+            meal.setImageUrl("");
+            meals.add(meal);
+        }
+
+
+        return meals;
     }
 
 }

@@ -41,6 +41,7 @@ public class UserService {
     @Autowired
     RegionService regionService;
 
+
     public User saveUser(User user){
         return userRepository.save(user);
     }
@@ -54,18 +55,7 @@ public class UserService {
         User user = new User();
         user.setDni(request.getDni());
         user.setEmail(request.getEmail());
-
-        //Cambiar cuando se suba a Azure
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
-        calendar.setTime(new Date());
-        //calendar.add(Calendar.HOUR_OF_DAY, -5);
-
-
-        user.setRegisterDate(calendar.getTime());
-
-        //user.setRegisterDate(request.getRegisterDate());
-
+        user.setRegisterDate(UtilService.getNowDate());
         user.setBirthDate(request.getBirthDate());
         user.setLastName(request.getLastName());
         user.setFirstName(request.getFirstName());
@@ -97,17 +87,7 @@ public class UserService {
         User user = new User();
         user.setDni(request.getDni());
         user.setEmail(request.getEmail());
-
-        //Cambiar cuando se suba a Azure
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
-        calendar.setTime(new Date());
-        //calendar.add(Calendar.HOUR_OF_DAY, -5);
-        user.setRegisterDate(calendar.getTime());
-
-        //user.setRegisterDate(request.getRegisterDate());
-
-
+        user.setRegisterDate(UtilService.getNowDate());
         user.setBirthDate(request.getBirthDate());
         user.setLastName(request.getLastName());
         user.setFirstName(request.getFirstName());
@@ -137,7 +117,7 @@ public class UserService {
         patientLog.setImc(request.getImc());
         patientLog.setWeight(request.getWeight());
         patientLog.setTmb(request.getTmb());
-        patientLog.setDate(calendar.getTime());
+        patientLog.setDate(UtilService.getNowDate());
 
         try {
             user = userRepository.save(user);
@@ -174,17 +154,13 @@ public class UserService {
         SecretKeySpec key = null;
         try {
             key = createSecretKey("contrasena".toCharArray(), salt, iterationCount, keyLength);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeySpecException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
         String nueva = contrasena;
         try {
             nueva = Encryption.encrypt(contrasena, key);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (GeneralSecurityException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
@@ -208,17 +184,13 @@ public class UserService {
         SecretKeySpec key = null;
         try {
             key = createSecretKey("contrasena".toCharArray(), salt, iterationCount, keyLength);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeySpecException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
         String nueva = contrasena;
         try {
             nueva = Encryption.decrypt(contrasena, key);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
 

@@ -8,15 +8,12 @@ import com.upc.fullfeedbackend.models.dto.ResponseDTO;
 import com.upc.fullfeedbackend.services.DoctorService;
 import com.upc.fullfeedbackend.services.PatientService;
 import com.upc.fullfeedbackend.services.PersonalTreatmentsService;
+import com.upc.fullfeedbackend.services.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 @RestController
 @RequestMapping("/personalTreatments")
@@ -77,14 +74,6 @@ public class PersonalTreatmentsController {
         Doctor doctor = new Doctor();
         Patient patient = new Patient();
 
-        //Cambiar cuando se suba a Azure
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.setTimeZone(TimeZone.getTimeZone("America/Bogota"));
-        //calendar.add(Calendar.HOUR_OF_DAY, -5);
-
-
-
         try {
             PersonalTreatments personalTreatments = new PersonalTreatments();
 
@@ -112,7 +101,7 @@ public class PersonalTreatmentsController {
             personalTreatments.setPatient(patient);
             personalTreatments.setEndDate(null);
             personalTreatments.setActive((byte) 1);
-            personalTreatments.setStartDate(calendar.getTime());
+            personalTreatments.setStartDate(UtilService.getNowDate());
 
             personalTreatments = personalTreatmentsService.savePersonalTreatments(personalTreatments);
 
