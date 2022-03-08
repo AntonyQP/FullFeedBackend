@@ -22,4 +22,7 @@ public class DoctorService {
         return doctorRepository.findById(doctorId).get();
     }
 
+    public Doctor getDoctorByUserId(Long userId){
+        return doctorRepository.findByUser_UserId(userId);
+    }
 }

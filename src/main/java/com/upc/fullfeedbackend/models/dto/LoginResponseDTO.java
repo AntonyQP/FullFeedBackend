@@ -1,18 +1,20 @@
 package com.upc.fullfeedbackend.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.upc.fullfeedbackend.models.Region;
 import com.upc.fullfeedbackend.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponseDTO {
+public class LoginResponseDTO<T> {
 
-    private int httpCode;
-    private int errorCode;
-    private String errorMessage;
-    private User data;
+    private T profile;
 
 }

@@ -2,6 +2,8 @@ package com.upc.fullfeedbackend.controllers;
 
 import com.upc.fullfeedbackend.models.*;
 import com.upc.fullfeedbackend.models.dto.*;
+import com.upc.fullfeedbackend.services.DoctorService;
+import com.upc.fullfeedbackend.services.PatientService;
 import com.upc.fullfeedbackend.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,6 +23,12 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    PatientService patientService;
+
+    @Autowired
+    DoctorService doctorService;
 
 
     @GetMapping("/test")
@@ -97,41 +105,51 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
+    public ResponseEntity<ResponseDTO<LoginResponseDTO>> login(@RequestBody LoginRequestDTO request) {
 
+        LoginResponseDTO loginResponseDTO = new LoginResponseDTO<Patient>();
         User user = userService.findByEmail(request.getEmail());
-        LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+        ResponseDTO<LoginResponseDTO> responseDTO = new ResponseDTO<>();
+
         if (user != null) {
             String pass = userService.DesencriptarContrasena(user.getPassword());
             if (pass.equals(request.getPassword())){
-                loginResponseDTO.setHttpCode(HttpStatus.OK.value());
-                loginResponseDTO.setErrorCode(0);
-                loginResponseDTO.setErrorMessage("");
-                loginResponseDTO.setData(user);
+                if (user.getRol().equals("p")){
+                    Patient patient = patientService.getPatientByUserId(user.getUserId());
+                    loginResponseDTO.setProfile(patient);
+                }else{
+                    Doctor doctor = doctorService.getDoctorByUserId(user.getUserId());
+                    loginResponseDTO.setProfile(doctor);
+                }
+
+                responseDTO.setHttpCode(HttpStatus.OK.value());
+                responseDTO.setErrorCode(0);
+                responseDTO.setErrorMessage("");
+                responseDTO.setData(loginResponseDTO);
 
                 HttpHeaders responseHeaders = new HttpHeaders();
                 responseHeaders.set("Token",
                         getJWTToken(request.getEmail()));
 
-                return new ResponseEntity<>(loginResponseDTO, responseHeaders,HttpStatus.OK);
+                return new ResponseEntity<>(responseDTO, responseHeaders,HttpStatus.OK);
             } else {
 
-                loginResponseDTO.setHttpCode(HttpStatus.OK.value());
-                loginResponseDTO.setErrorCode(2);
-                loginResponseDTO.setErrorMessage("Password is incorrect");
-                loginResponseDTO.setData(null);
+                responseDTO.setHttpCode(HttpStatus.OK.value());
+                responseDTO.setErrorCode(2);
+                responseDTO.setErrorMessage("Password is incorrect");
+                responseDTO.setData(null);
 
-                return new ResponseEntity<>(loginResponseDTO,HttpStatus.OK);
+                return new ResponseEntity<>(responseDTO,HttpStatus.OK);
             }
         } else{
-            loginResponseDTO.setHttpCode(HttpStatus.OK.value());
-            loginResponseDTO.setErrorCode(1);
-            loginResponseDTO.setErrorMessage("User not registered");
-            loginResponseDTO.setData(null);
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(1);
+            responseDTO.setErrorMessage("User not registered");
+            responseDTO.setData(null);
 
         }
 
-        return new ResponseEntity<>(loginResponseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     private String getJWTToken(String username) {

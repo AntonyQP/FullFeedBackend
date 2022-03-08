@@ -32,6 +32,4 @@ public class RegisterPatientRequestDTO {
     private float tmb;
     private Long regionId;
 
-
-
 }

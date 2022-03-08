@@ -70,7 +70,7 @@ public class UserService {
         user.setLastName(request.getLastName());
         user.setFirstName(request.getFirstName());
         user.setPhone(request.getPhone());
-        user.setRol(request.getRol());
+        user.setRol("d");
         user.setSex(request.getSex());
         user.setUsername(request.getUsername());
         String newPassword = EncriptarContrasena(request.getPassword());

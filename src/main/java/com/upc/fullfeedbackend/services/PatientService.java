@@ -33,4 +33,8 @@ public class PatientService {
         return patientRepository.getTotalWeightLoss(patientId);
     }
 
+    public Patient getPatientByUserId(Long userId){
+        return patientRepository.findByUser_UserId(userId);
+    }
+
 }
