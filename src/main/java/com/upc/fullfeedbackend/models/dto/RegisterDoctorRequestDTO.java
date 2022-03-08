@@ -22,6 +22,7 @@ public class RegisterDoctorRequestDTO {
     private String sex;
     private String dni;
     private String rol = "d";
+
     private String licenseNumber;
 
 }

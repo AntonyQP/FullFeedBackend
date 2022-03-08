@@ -30,4 +30,8 @@ public class RegisterPatientRequestDTO {
     private float arm;
     private float abdominal;
     private float tmb;
+    private Long regionId;
+
+
+
 }

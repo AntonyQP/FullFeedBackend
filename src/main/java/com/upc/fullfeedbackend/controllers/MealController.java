@@ -44,7 +44,7 @@ public class MealController {
     }
 
     @GetMapping("/diet-meals")
-    private List<Meal> getMealsInTheWeek(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+    private List<Meal> getMealsBetweenDates(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                          @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
                                          @RequestParam Long patientId){
         Date sd = normalizeDate(startDate);

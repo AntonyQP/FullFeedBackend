@@ -92,7 +92,7 @@ public class NutritionalPlanController {
             double calorias = (66 + (13.7 * patient.getWeight())) + ((5 * patient.getHeight()) - (6.8 * patient.getAge())) * 1.2;
 
             //[66 + (13,7 × peso en kg) ] + [ (5 × altura en cm) – (6,8 × edad)] × Factor actividad.
-            List<Meal> meals =  mealService.generateTwoWeeksMealsForPatient(patient.getPatientId(), redondearCalorias(calorias), (int)patient.getWeight());
+            List<Meal> meals =  mealService.generateMonthMealsForPatient(patient.getPatientId(), redondearCalorias(calorias), (int)patient.getWeight());
 
             nutritionalPlanResponseDTO.setIsActive(nutritionalPlan.getIsActive());
             nutritionalPlanResponseDTO.setNutritionalPlanId(nutritionalPlan.getNutritionalPlanId());

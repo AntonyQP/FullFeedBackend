@@ -3,10 +3,7 @@ package com.upc.fullfeedbackend.services;
 import com.upc.fullfeedbackend.models.*;
 import com.upc.fullfeedbackend.models.dto.RegisterDoctorRequestDTO;
 import com.upc.fullfeedbackend.models.dto.RegisterPatientRequestDTO;
-import com.upc.fullfeedbackend.repositories.DoctorRepository;
-import com.upc.fullfeedbackend.repositories.PatientLogRepository;
-import com.upc.fullfeedbackend.repositories.PatientRepository;
-import com.upc.fullfeedbackend.repositories.UserRepository;
+import com.upc.fullfeedbackend.repositories.*;
 import com.upc.fullfeedbackend.util.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +37,9 @@ public class UserService {
 
     @Autowired
     PatientLogRepository patientLogRepository;
+
+    @Autowired
+    RegionService regionService;
 
     public User saveUser(User user){
         return userRepository.save(user);
@@ -126,6 +126,9 @@ public class UserService {
         patient.setWeight(request.getWeight());
         patient.setTmb(request.getTmb());
         patient.setAge(HallarEdadActual(request.getBirthDate()));
+
+        Region region =  regionService.getRegionById(request.getRegionId());
+        patient.setRegion(region);
 
         PatientLog patientLog = new PatientLog();
         patientLog.setAbdominal(request.getAbdominal());

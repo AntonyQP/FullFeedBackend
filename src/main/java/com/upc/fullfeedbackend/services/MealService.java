@@ -2,6 +2,7 @@ package com.upc.fullfeedbackend.services;
 
 import com.upc.fullfeedbackend.models.Meal;
 import com.upc.fullfeedbackend.models.NutritionalPlan;
+import com.upc.fullfeedbackend.models.Patient;
 import com.upc.fullfeedbackend.models.api.ApiRequest;
 import com.upc.fullfeedbackend.models.api.Dish;
 import com.upc.fullfeedbackend.repositories.MealRespository;
@@ -26,6 +27,9 @@ public class MealService {
     @Autowired
     NutritionalPlanService nutritionalPlanService;
 
+    @Autowired
+    PatientService patientService;
+
     public List<Meal> getMeals(){
         return null;
     }
@@ -38,18 +42,21 @@ public class MealService {
         return mealRespository.save(meal);
     }
 
-    public List<Meal> generateTwoWeeksMealsForPatient(Long patientId, Integer calories, Integer weight){
+    public List<Meal> generateMonthMealsForPatient(Long patientId, Integer calories, Integer weight){
 
-        String url = "https://fullfeedflask-app.herokuapp.com/diet-week";
+        String url = "https://fullfeedflask-app.herokuapp.com/diet-month";
 
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
+        Patient patient = patientService.getPatientById(patientId);
+
         ApiRequest apiRequest = new ApiRequest();
         apiRequest.setCalories(calories);
         apiRequest.setWeight(weight);
+        apiRequest.setRegion(patient.getRegion().getName());
 
         HttpEntity<ApiRequest> httpEntity = new HttpEntity<>(apiRequest, headers);
 
@@ -64,20 +71,21 @@ public class MealService {
         for (Dish[] dishList: dishes) {
             for (Dish dish: dishList) {
                 Meal meal = new Meal();
-                meal.setSchedule(dish.getTipo());
+                meal.setSchedule(dish.getHorario());
                 meal.setName(dish.getNombre());
                 meal.setProtein(dish.getProteinas());
                 meal.setFat(dish.getGrasas());
                 meal.setCarbohydrates(dish.getCarbohidratos());
                 meal.setNutritionalPlan(nutritionalPlan);
+                meal.setStatus((byte) 0);
 
                 String result = String.join("-", dish.getIngredientes());
                 meal.setIngredients(result);
 
                 meal.setTotalCalories(dish.getCalorias_totales());
                 meal.setGramsPortion(dish.getPorcion_gramos());
-
                 meal.setDay(getDate(indexDay));
+
                 meals.add(meal);
             }
             indexDay++;

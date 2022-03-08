@@ -27,8 +27,12 @@ public class Patient {
     private float tmb;
     private int age;
 
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "regionId",nullable = false)
+    private Region region;
+
     @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId",nullable = true)
+    @JoinColumn(name = "userId",nullable = false)
     private User user;
 
 }

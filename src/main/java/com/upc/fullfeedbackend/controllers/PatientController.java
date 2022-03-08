@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -37,6 +38,8 @@ public class PatientController {
     @Autowired
     MealService mealService;
 
+
+
     @GetMapping()
     public List<Patient> getAllPatients() {
         return patientService.getAllPatients();
@@ -52,14 +55,7 @@ public class PatientController {
 
         PatientLog patientLog = new PatientLog();
 
-        //Cambiar cuando se suba a Amazon
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("GMT-5"));
-        calendar.setTime(new Date());
-        calendar.setTimeZone(TimeZone.getTimeZone("GMT-5"));
-        if (calendar.getTimeZone() != TimeZone.getTimeZone("GMT-5")){
-            calendar.add(Calendar.HOUR_OF_DAY, -5);
-        }
+        Date date = UtilService.getNowDate();
 
         ResponseDTO<Patient> responseDTO = new ResponseDTO<>();
 
@@ -74,10 +70,9 @@ public class PatientController {
                 patient.setWeight(patientUpdateDTO.getWeight());
                 patient.setAbdominal(patientUpdateDTO.getAbdominal());
 
-
                 patientLog.setPatient(patient);
                 patientLog.setArm(patientUpdateDTO.getArm());
-                patientLog.setDate(calendar.getTime());
+                patientLog.setDate(date);
                 patientLog.setHeight(patientUpdateDTO.getHeight());
                 patientLog.setImc(patientUpdateDTO.getImc());
                 patientLog.setTmb(patientUpdateDTO.getTmb());

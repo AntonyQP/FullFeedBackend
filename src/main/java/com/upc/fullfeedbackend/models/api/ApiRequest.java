@@ -7,4 +7,5 @@ public class ApiRequest {
 
     Integer calories;
     Integer weight;
+    String region;
 }
