@@ -77,6 +77,51 @@ public class MealController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+    @PutMapping("/failedMeal")
+    private ResponseEntity<ResponseDTO<Meal>> failedMeal(@RequestParam Long mealId){
+        ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
+
+        try {
+            Meal meal = mealService.getMealByID(mealId);
+            meal.setStatus((byte) 2);
+            meal = mealService.saveMeal(meal);
+
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(meal);
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @PutMapping("/restoreMeal")
+    private ResponseEntity<ResponseDTO<Meal>> restoreMeal(@RequestParam Long mealId){
+        ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
+
+        try {
+            Meal meal = mealService.getMealByID(mealId);
+            meal.setStatus((byte) 0);
+            meal = mealService.saveMeal(meal);
+
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(meal);
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 
 
     private Date normalizeDate(Date dt){
