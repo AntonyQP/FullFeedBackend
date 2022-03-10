@@ -6,7 +6,10 @@ import com.upc.fullfeedbackend.models.Patient;
 import com.upc.fullfeedbackend.models.api.ApiAlternativesRequest;
 import com.upc.fullfeedbackend.models.api.ApiRequest;
 import com.upc.fullfeedbackend.models.api.Dish;
+import com.upc.fullfeedbackend.models.dto.ConsumedBalanceMapSQL;
+import com.upc.fullfeedbackend.models.dto.ConsumedBalanceResponseDTO;
 import com.upc.fullfeedbackend.repositories.MealRespository;
+import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,10 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MealService {
@@ -110,8 +110,8 @@ public class MealService {
         return dt;
     }
 
-    public List<Meal> getMealsByDay(Date date){
-        return mealRespository.findByDay(date);
+    public List<Meal> getMealsByDay(Date date, Long patientId){
+        return mealRespository.findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(date, patientId, (byte) 1);
     }
 
     public List<Meal> getMealsBetweenDatesAndNutritionalPlan(Date startDate, Date endDate, NutritionalPlan nutritionalPlanService){
@@ -157,6 +157,15 @@ public class MealService {
 
 
         return meals;
+    }
+
+    public List<ConsumedBalanceResponseDTO> getConsumedBalanced(Long patientId, Date startDate, Date endDate){
+        List<ConsumedBalanceMapSQL> resultSQl = mealRespository.getConsumeBalance(patientId, startDate, endDate);
+        List<ConsumedBalanceResponseDTO> response = new ArrayList<>();
+        for (ConsumedBalanceMapSQL item: resultSQl) {
+            response.add(new ConsumedBalanceResponseDTO(item.getDate(), item.getFat(), item.getCarbohydrates(),item.getProtein()));
+        }
+        return response;
     }
 
 }

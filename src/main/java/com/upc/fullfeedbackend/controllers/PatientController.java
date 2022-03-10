@@ -40,7 +40,7 @@ public class PatientController {
 
 
 
-    @GetMapping()
+    @GetMapping("")
     public List<Patient> getAllPatients() {
         return patientService.getAllPatients();
     }
@@ -60,7 +60,6 @@ public class PatientController {
         ResponseDTO<Patient> responseDTO = new ResponseDTO<>();
 
         try {
-
                 Patient patient = patientService.getPatientById(patientUpdateDTO.getPatientId());
 
                 patient.setArm(patientUpdateDTO.getArm());
@@ -94,7 +93,6 @@ public class PatientController {
         return new ResponseEntity<>(null , HttpStatus.NO_CONTENT);
     }
 
-
     @GetMapping("/historial")
     public ResponseEntity<ResponseDTO<List<PatientLog>>> getHistorial(@RequestParam Long patientId){
 
@@ -111,7 +109,6 @@ public class PatientController {
 
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
-
 
     @GetMapping("/preferences")
     public ResponseEntity<ResponseDTO<List<PatientPreferences>>> getPrefernces(@RequestParam Long patientId){
@@ -185,8 +182,6 @@ public class PatientController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-
-
     @GetMapping("/successfulDays")
     public ResponseEntity<ResponseDTO<PatientProgressDTO>> getProgressbyPatient(@RequestParam Long patientId){
         ResponseDTO<PatientProgressDTO> responseDTO = new ResponseDTO<>();
@@ -211,5 +206,8 @@ public class PatientController {
 
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
+
+
 
 }

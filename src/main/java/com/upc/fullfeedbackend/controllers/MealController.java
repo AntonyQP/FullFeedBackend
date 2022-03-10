@@ -39,8 +39,8 @@ public class MealController {
 
 
     @GetMapping("/day")
-    private List<Meal> getMealsByDay(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
-        return mealService.getMealsByDay(normalizeDate(date));
+    private List<Meal> getMealsByDay(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @RequestParam Long patientId){
+        return mealService.getMealsByDay(normalizeDate(date), patientId);
     }
 
     @GetMapping("/diet-meals")
