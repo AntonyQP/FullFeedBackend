@@ -34,7 +34,7 @@ public class FullFeedBackendApplication{
                     .authorizeRequests()
                     .antMatchers("/user/**","/patient/**","/hospital/**", "/swagger-resources/**", "/preferences",
                             "/swagger-ui.html",
-                            "/v2/api-docs",
+                            "/v2/api-docs", "/doctor/**",
                             "/meal/**",
                             "/webjars/**", "/meal/**", "/nutritionalPlan/**", "/personalTreatments","/personalTreatments/**", "/region/**").permitAll()
                     .anyRequest().authenticated();

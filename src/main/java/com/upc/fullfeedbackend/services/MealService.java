@@ -96,20 +96,6 @@ public class MealService {
         return mealRespository.saveAll(meals);
     }
 
-    private Date getDate(int diaMas){
-        Date dt = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt);
-        c.add(Calendar.DATE, diaMas);
-        c.set(Calendar.HOUR, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        dt = c.getTime();
-        return dt;
-    }
-
     public List<Meal> getMealsByDay(Date date, Long patientId){
         return mealRespository.findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(date, patientId, (byte) 1);
     }
@@ -166,6 +152,31 @@ public class MealService {
             response.add(new ConsumedBalanceResponseDTO(item.getDate(), item.getFat(), item.getCarbohydrates(),item.getProtein()));
         }
         return response;
+    }
+
+    public Integer getFirstDayOfWeekMeal(Long patientId){
+        Calendar c = Calendar.getInstance();
+        Date dt = mealRespository.getFirstDayWeekOfDiet(patientId);
+        if (dt == null) return 0;
+        c.setTime(dt);
+        Integer day = c.get(Calendar.DAY_OF_WEEK);
+        day--;
+        if (day < 1) day = 7;
+        return day;
+    }
+
+    private Date getDate(int diaMas){
+        Date dt = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
+        c.add(Calendar.DATE, diaMas);
+        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        dt = c.getTime();
+        return dt;
     }
 
 }

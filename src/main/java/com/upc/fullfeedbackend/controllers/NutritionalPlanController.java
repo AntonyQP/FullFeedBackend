@@ -4,12 +4,10 @@ import com.upc.fullfeedbackend.models.Meal;
 import com.upc.fullfeedbackend.models.NutritionalPlan;
 import com.upc.fullfeedbackend.models.Patient;
 import com.upc.fullfeedbackend.models.PersonalTreatments;
-import com.upc.fullfeedbackend.models.dto.ConsumedBalanceResponseDTO;
-import com.upc.fullfeedbackend.models.dto.NutritionalPlanRequestDTO;
-import com.upc.fullfeedbackend.models.dto.NutritionalPlanResponseDTO;
-import com.upc.fullfeedbackend.models.dto.ResponseDTO;
+import com.upc.fullfeedbackend.models.dto.*;
 import com.upc.fullfeedbackend.services.MealService;
 import com.upc.fullfeedbackend.services.NutritionalPlanService;
+import com.upc.fullfeedbackend.services.PatientLogService;
 import com.upc.fullfeedbackend.services.PersonalTreatmentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,6 +30,9 @@ public class NutritionalPlanController {
 
     @Autowired
     MealService mealService;
+
+    @Autowired
+    PatientLogService patientLogService;
 
     @GetMapping("")
     public ResponseEntity<ResponseDTO<NutritionalPlan>> getActiveNutritionalPlan(@RequestParam Long patientId){
@@ -138,13 +139,19 @@ public class NutritionalPlanController {
 
     @GetMapping("/consumedBalance")
     public ResponseEntity<ResponseDTO<List<ConsumedBalanceResponseDTO>>> getConsumedBalancedBetweenDates(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                                                                                         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
-                                                                                                         @RequestParam Long patientId){
+                                                                                                         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate, @RequestParam Long patientId){
         ResponseDTO<List<ConsumedBalanceResponseDTO>> responseDTO = new ResponseDTO<>();
 
         try {
             List<ConsumedBalanceResponseDTO> consumedBalanced = mealService.getConsumedBalanced(patientId, startDate,endDate);
+            if(consumedBalanced == null){
+                responseDTO.setHttpCode(HttpStatus.OK.value());
+                responseDTO.setErrorCode(0);
+                responseDTO.setErrorMessage("");
+                responseDTO.setData(null);
 
+                return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            }
             responseDTO.setHttpCode(HttpStatus.OK.value());
             responseDTO.setErrorCode(0);
             responseDTO.setErrorMessage("");
@@ -157,6 +164,34 @@ public class NutritionalPlanController {
         }
 
      return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/weightEvolution")
+    public ResponseEntity<ResponseDTO<List<WeightEvolutionResponseDTO>>> getweightEvolution(@RequestParam Long patientId){
+        ResponseDTO<List<WeightEvolutionResponseDTO>> responseDTO = new ResponseDTO<>();
+
+        try {
+            List<WeightEvolutionResponseDTO> listWeight = patientLogService.getWeightHistorial(patientId);
+            if (listWeight == null){
+                responseDTO.setHttpCode(HttpStatus.OK.value());
+                responseDTO.setErrorCode(1);;
+                responseDTO.setErrorMessage("No se encontro un historial para el paciente");
+                responseDTO.setData(null);
+                return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+            }
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);;
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(listWeight);
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+
     }
 
 }

@@ -3,6 +3,7 @@ package com.upc.fullfeedbackend.controllers;
 import com.upc.fullfeedbackend.models.*;
 import com.upc.fullfeedbackend.models.dto.*;
 import com.upc.fullfeedbackend.services.DoctorService;
+import com.upc.fullfeedbackend.services.MealService;
 import com.upc.fullfeedbackend.services.PatientService;
 import com.upc.fullfeedbackend.services.UserService;
 import io.jsonwebtoken.Jwts;
@@ -29,6 +30,9 @@ public class UserController {
 
     @Autowired
     DoctorService doctorService;
+
+    @Autowired
+    MealService mealService;
 
 
     @PostMapping("/doctor")
@@ -106,12 +110,14 @@ public class UserController {
         User user = userService.findByEmail(request.getEmail());
         ResponseDTO<LoginResponseDTO> responseDTO = new ResponseDTO<>();
 
+        Integer day = 0;
         if (user != null) {
             String pass = userService.DesencriptarContrasena(user.getPassword());
             if (pass.equals(request.getPassword())){
                 if (user.getRol().equals("p")){
                     Patient patient = patientService.getPatientByUserId(user.getUserId());
                     loginResponseDTO.setProfile(patient);
+                    day = mealService.getFirstDayOfWeekMeal(patient.getPatientId());
                 }else{
                     Doctor doctor = doctorService.getDoctorByUserId(user.getUserId());
                     loginResponseDTO.setProfile(doctor);
@@ -122,9 +128,12 @@ public class UserController {
                 responseDTO.setErrorMessage("");
                 responseDTO.setData(loginResponseDTO);
 
+
+
                 HttpHeaders responseHeaders = new HttpHeaders();
                 responseHeaders.set("Token",
                         getJWTToken(request.getEmail()));
+                responseHeaders.set("FirstDayOfWeek",  day.toString());
 
                 return new ResponseEntity<>(responseDTO, responseHeaders,HttpStatus.OK);
             } else {
