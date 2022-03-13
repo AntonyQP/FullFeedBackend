@@ -24,4 +24,8 @@ public class PersonalTreatmentsService {
         return personalTreatmentsRepository.save(personalTreatments);
     }
 
+    public PersonalTreatments updatePersonaTreatments(PersonalTreatments personalTreatments){
+        return personalTreatmentsRepository.save(personalTreatments);
+    }
+
 }

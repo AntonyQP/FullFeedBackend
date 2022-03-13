@@ -49,7 +49,6 @@ public class PatientController {
     public PatientLog savePatientLog(@RequestBody PatientLog patientLog){
         return patientLogService.savePatientLog(patientLog);
     }
-
     @PutMapping("/updatePatient")
     public ResponseEntity<ResponseDTO<Patient>> updatePatient(@RequestBody PatientUpdateDTO patientUpdateDTO){
 
@@ -207,7 +206,37 @@ public class PatientController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+    @PostMapping("/generateDiet")
+    public ResponseEntity<ResponseDTO<Meal>> generateDietAtRegister(@RequestParam Long patientId){
 
+        ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
+        String errorMessage = "";
+        try {
 
+            responseDTO.setHttpCode(HttpStatus.CREATED.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            Meal meal = patientService.generateDietByPatient(patientId);
+            if (meal == null){
+                responseDTO.setHttpCode(HttpStatus.OK.value());
+                responseDTO.setErrorCode(1);
+                responseDTO.setErrorMessage("No se pudo generar las comidas");
+                responseDTO.setData(null);
+                return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            }
+            responseDTO.setData(meal);
 
+            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+
+        }catch (Exception e){
+            errorMessage = e.getMessage();
+        }
+
+        responseDTO.setHttpCode(HttpStatus.OK.value());
+        responseDTO.setErrorCode(2);
+        responseDTO.setErrorMessage("Ocurrio un error inesperado: " + errorMessage);
+        responseDTO.setData(null);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }

@@ -76,6 +76,7 @@ public class UserService {
         Doctor doctor = new Doctor();
         doctor.setLicenseNumber(request.getLicenseNumber());
         doctor.setUser(user);
+        doctor.setActivePatients(0);
 
         try {
             user = userRepository.save(user);
@@ -127,36 +128,12 @@ public class UserService {
         patientLog.setDate(UtilService.getNowDate());
 
 
-        double calories = UtilService.getCaloriesForPatient(patient);
-
         try {
             user = userRepository.save(user);
             patient.setUser(user);
             patient = patientRepository.save(patient);
             patientLog.setPatient(patient);
             patientLog = patientLogRepository.save(patientLog);
-
-
-            PersonalTreatments personalTreatments = new PersonalTreatments();
-            personalTreatments.setPatient(patient);
-            personalTreatments.setStartDate(UtilService.getNowDate());
-            personalTreatments.setActive((byte) 1);
-
-            Doctor doctor = doctorService.getDoctorWhitMinorPatients();
-
-            personalTreatments.setDoctor(doctor);
-
-            personalTreatments = personalTreatmentsService.savePersonalTreatments(personalTreatments);
-
-            NutritionalPlan nutritionalPlan = new NutritionalPlan();
-            nutritionalPlan.setWeightPatient(patient.getWeight());
-            nutritionalPlan.setCaloriesPlan(redondearCalorias(calories));
-            nutritionalPlan.setIsActive((byte) 1);
-            nutritionalPlan.setPersonalTreatments(personalTreatments);
-
-            nutritionalPlanService.saveNutritionalPlan(nutritionalPlan);
-
-            List<Meal> meals = mealService.generateMonthMealsForPatient(patient.getPatientId(), redondearCalorias(calories) , (int) patient.getWeight());
 
         }catch (Exception e){
             e.getMessage();
@@ -165,10 +142,8 @@ public class UserService {
         return patient;
     }
 
-    public Integer redondearCalorias(double calorias){
-        int cal = (int) Math.round(calorias / 10);
-        return cal * 10;
-    }
+
+
 
     public Integer HallarEdadActual(Date date){
         Calendar c = Calendar.getInstance();
@@ -211,7 +186,6 @@ public class UserService {
     public User findByEmail(String email){
         return userRepository.findByEmail(email);
     }
-
 
     public String  DesencriptarContrasena (String contrasena){
 

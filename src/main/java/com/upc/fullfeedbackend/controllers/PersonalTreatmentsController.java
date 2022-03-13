@@ -65,7 +65,6 @@ public class PersonalTreatmentsController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-
     @PostMapping("")
     public ResponseEntity<ResponseDTO<PersonalTreatments>> savePersonalTreatment(@RequestBody PersonalTreatmentsRequestDTO personalTreatmentsRequestDTO){
 
@@ -104,6 +103,9 @@ public class PersonalTreatmentsController {
             personalTreatments.setStartDate(UtilService.getNowDate());
 
             personalTreatments = personalTreatmentsService.savePersonalTreatments(personalTreatments);
+            doctor.setActivePatients(doctor.getActivePatients()== null ? 1 : doctor.getActivePatients() + 1);
+            doctorService.saveDoctor(doctor);
+
 
             responseDTO.setHttpCode(HttpStatus.OK.value());
             responseDTO.setErrorCode(0);
