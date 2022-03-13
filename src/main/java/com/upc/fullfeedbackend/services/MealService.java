@@ -31,6 +31,7 @@ public class MealService {
     @Autowired
     PatientService patientService;
 
+
     public List<Meal> getMeals(){
         return null;
     }
@@ -86,7 +87,8 @@ public class MealService {
 
                 meal.setTotalCalories(dish.getCalorias_totales());
                 meal.setGramsPortion(dish.getPorcion_gramos());
-                meal.setDay(getDate(indexDay));
+
+                meal.setDay(UtilService.getNowDateMealsWhitAddDays(indexDay));
 
                 meals.add(meal);
             }

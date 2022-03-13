@@ -72,7 +72,7 @@ public class NutritionalPlanController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<ResponseDTO<NutritionalPlanResponseDTO>> createNewNutritionalPlan(@RequestBody NutritionalPlanRequestDTO requestDTO){
+    public ResponseEntity<ResponseDTO<NutritionalPlanResponseDTO>> createNewNutritionalPlan(@RequestParam Long patientId){
 
         NutritionalPlan nutritionalPlan = new NutritionalPlan();
         NutritionalPlanResponseDTO nutritionalPlanResponseDTO = new NutritionalPlanResponseDTO();
@@ -80,20 +80,27 @@ public class NutritionalPlanController {
 
         try {
 
-            PersonalTreatments personalTreatments = personalTreatmentsService.getByPatientIdAndActive(requestDTO.getPatientId());
+            PersonalTreatments personalTreatments = personalTreatmentsService.getByPatientIdAndActive(patientId);
+
             byte active = 1;
+
             nutritionalPlan.setIsActive(active);
             nutritionalPlan.setPersonalTreatments(personalTreatments);
-            nutritionalPlan.setCaloriesPlan(requestDTO.getCaloriesPlan());
-            nutritionalPlan.setWeightPatient(requestDTO.getWeightPatient());
+            Patient patient = nutritionalPlan.getPersonalTreatments().getPatient();
+            nutritionalPlan.setWeightPatient((int)patient.getWeight());
 
+            double calorias = 0;
+            if (patient.getUser().getSex().equals("m"))
+                calorias = (655 + (9.6 * patient.getWeight())) + ((1.8 * patient.getHeight()) - (4.7 * patient.getAge())) * 1.2;
+            else
+                calorias = (66 + (13.7 * patient.getWeight())) + ((5 * patient.getHeight()) - (6.8 * patient.getAge())) * 1.2;
+
+            nutritionalPlan.setCaloriesPlan(calorias);
             nutritionalPlan = nutritionalPlanService.createNutritionalPlan(nutritionalPlan);
 
-            Patient patient = nutritionalPlan.getPersonalTreatments().getPatient();
+            //[655 + (9,6 × peso en kg) ] + [ (1,8 × altura en cm) – (4,7 × edad)] × Factor actividad. - Mujer
+            //[66 + (13,7 × peso en kg) ] + [ (5 × altura en cm) – (6,8 × edad)] × Factor actividad. - Hombre
 
-            double calorias = (66 + (13.7 * patient.getWeight())) + ((5 * patient.getHeight()) - (6.8 * patient.getAge())) * 1.2;
-
-            //[66 + (13,7 × peso en kg) ] + [ (5 × altura en cm) – (6,8 × edad)] × Factor actividad.
             List<Meal> meals =  mealService.generateMonthMealsForPatient(patient.getPatientId(), redondearCalorias(calorias), (int)patient.getWeight());
 
             nutritionalPlanResponseDTO.setIsActive(nutritionalPlan.getIsActive());
@@ -101,8 +108,6 @@ public class NutritionalPlanController {
             nutritionalPlanResponseDTO.setPersonalTreatmentId(nutritionalPlan.getPersonalTreatments().getPersonalTreatmentId());
             nutritionalPlanResponseDTO.setCaloriesPlan(nutritionalPlan.getCaloriesPlan());
             nutritionalPlanResponseDTO.setWeightPatient(nutritionalPlan.getWeightPatient());
-
-
 
             if (meals.equals(null)){
                 responseDTO.setHttpCode(HttpStatus.OK.value());
