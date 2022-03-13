@@ -207,16 +207,16 @@ public class PatientController {
     }
 
     @PostMapping("/generateDiet")
-    public ResponseEntity<ResponseDTO<Meal>> generateDietAtRegister(@RequestParam Long patientId){
+    public ResponseEntity<ResponseDTO<List<Meal>>> generateDietAtRegister(@RequestParam Long patientId){
 
-        ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<Meal>> responseDTO = new ResponseDTO<>();
         String errorMessage = "";
         try {
 
             responseDTO.setHttpCode(HttpStatus.CREATED.value());
             responseDTO.setErrorCode(0);
             responseDTO.setErrorMessage("");
-            Meal meal = patientService.generateDietByPatient(patientId);
+            List<Meal> meal = patientService.generateDietByPatient(patientId);
             if (meal == null){
                 responseDTO.setHttpCode(HttpStatus.OK.value());
                 responseDTO.setErrorCode(1);

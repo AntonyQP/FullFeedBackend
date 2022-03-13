@@ -1,10 +1,12 @@
     package com.upc.fullfeedbackend.services;
 
+import com.google.common.collect.Lists;
 import com.upc.fullfeedbackend.models.*;
 import com.upc.fullfeedbackend.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class PatientService {
         return patientRepository.findByUser_UserId(userId);
     }
 
-    public Meal generateDietByPatient(Long patientId){
+    public List<Meal> generateDietByPatient(Long patientId){
         Patient patient = patientRepository.findByPatientId(patientId);
 
 
@@ -79,10 +81,16 @@ public class PatientService {
 
         doctor.setActivePatients(doctor.getActivePatients()== null ? 1 : doctor.getActivePatients() + 1);
         doctorService.saveDoctor(doctor);
+
+        List<Meal> mealsFirstWeek = new ArrayList<>();
         if (meals != null)
         {
-            if (meals.size() > 0)
-                return meals.get(0);
+            if (meals.size() > 0) {
+                for (int i = 0; i< 35; i++) {
+                    mealsFirstWeek.add(meals.get(i));
+                }
+                return mealsFirstWeek;
+            }
         }
         return null;
     }
