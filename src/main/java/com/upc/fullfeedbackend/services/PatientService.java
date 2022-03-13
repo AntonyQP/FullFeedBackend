@@ -75,7 +75,7 @@ public class PatientService {
         nutritionalPlan.setIsActive((byte) 1);
         nutritionalPlan.setPersonalTreatments(personalTreatments);
 
-        nutritionalPlanService.saveNutritionalPlan(nutritionalPlan);
+        nutritionalPlanService.createNutritionalPlan(nutritionalPlan);
 
         List<Meal> meals = mealService.generateMonthMealsForPatient(patient.getPatientId(), redondearCalorias(calories) , (int) patient.getWeight());
 
