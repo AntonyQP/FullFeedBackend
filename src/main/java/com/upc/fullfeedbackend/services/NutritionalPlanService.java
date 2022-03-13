@@ -12,6 +12,10 @@ public class NutritionalPlanService {
     @Autowired
     NutritionalPlanRepository nutritionalPlanRepository;
 
+
+    public NutritionalPlan saveNutritionalPlan(NutritionalPlan nutritionalPlan){
+        return nutritionalPlanRepository.save(nutritionalPlan);
+    }
     public NutritionalPlan getNutritionalPlanById(Long nutritionalPlanId){
         return nutritionalPlanRepository.findById(nutritionalPlanId).get();
     }

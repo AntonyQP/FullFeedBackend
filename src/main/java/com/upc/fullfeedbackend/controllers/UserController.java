@@ -14,7 +14,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,7 +53,7 @@ public class UserController {
             registerResponseDTO.setErrorCode(0);
             registerResponseDTO.setErrorMessage("");
             registerResponseDTO.setHttpCode(HttpStatus.CREATED.value());
-            registerResponseDTO.setData(userService.saveDoctor(request));
+            registerResponseDTO.setData(userService.registerDoctor(request));
 
             return new ResponseEntity<>(registerResponseDTO, HttpStatus.CREATED) ;
         } catch (Exception e) {
@@ -83,7 +82,7 @@ public class UserController {
             registerResponseDTO.setErrorCode(0);
             registerResponseDTO.setErrorMessage("");
             registerResponseDTO.setHttpCode(HttpStatus.CREATED.value());
-            registerResponseDTO.setData(userService.savePatient(request));
+            registerResponseDTO.setData(userService.registerPatient(request));
 
             return new ResponseEntity<>(registerResponseDTO, HttpStatus.CREATED);
         } catch (Exception e) {

@@ -9,6 +9,7 @@ import com.upc.fullfeedbackend.models.api.Dish;
 import com.upc.fullfeedbackend.models.dto.ConsumedBalanceMapSQL;
 import com.upc.fullfeedbackend.models.dto.ConsumedBalanceResponseDTO;
 import com.upc.fullfeedbackend.repositories.MealRespository;
+import io.swagger.models.auth.In;
 import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -67,7 +68,6 @@ public class MealService {
         List<Meal> meals = new ArrayList<>();
 
         NutritionalPlan nutritionalPlan = nutritionalPlanService.getActiveNutritionalPlanByPatientId(patientId);
-        //NutritionalPlan nutritionalPlan = nutritionalPlanService.getNutritionalPlanById(nutritionalPlanId);
 
         int indexDay = 1;
         for (Dish[] dishList: dishes) {
@@ -107,7 +107,9 @@ public class MealService {
     }
 
     public Integer getCountOfSuccessfulDaysByPatient(Long patientId){
-        return mealRespository.countByStatusAndNutritionalPlan_PersonalTreatments_Patient_PatientId((byte) 1, patientId);
+        Integer successfulDays = mealRespository.countByStatusAndNutritionalPlan_PersonalTreatments_Patient_PatientId((byte) 1, patientId);
+        if (successfulDays != null) return successfulDays;
+        return 0;
     }
 
     public List<Meal> generateAlternativesMeal(ApiAlternativesRequest request){

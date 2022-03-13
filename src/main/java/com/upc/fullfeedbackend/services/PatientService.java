@@ -1,4 +1,4 @@
-package com.upc.fullfeedbackend.services;
+    package com.upc.fullfeedbackend.services;
 
 import com.upc.fullfeedbackend.models.Patient;
 import com.upc.fullfeedbackend.models.PatientPreferences;
@@ -30,7 +30,9 @@ public class PatientService {
 
 
     public Integer getTotalLostWeightByPatient(Long patientId){
-        return patientRepository.getTotalWeightLoss(patientId);
+        Integer lossWeight =  patientRepository.getTotalWeightLoss(patientId);
+        if (lossWeight != null) return lossWeight;
+        return 0;
     }
 
     public Patient getPatientByUserId(Long userId){

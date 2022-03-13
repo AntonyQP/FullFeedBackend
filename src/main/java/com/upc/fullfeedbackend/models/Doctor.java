@@ -20,6 +20,8 @@ public class Doctor {
 
     private String licenseNumber;
 
+    private Integer activePatients;
+
     @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "userId",nullable = true)
     private User user;

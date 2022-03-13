@@ -35,4 +35,19 @@ public class DoctorService {
         return personalTreatmentsRepository.findPatientsByDoctor(doctorId);
     }
 
+    public Doctor getDoctorWhitMinorPatients(){
+        List<Doctor> doctors = doctorRepository.findDoctorsOrderByActivePatients();
+        if (doctors != null ) {
+            if (doctors.size() > 0)
+                return doctors.get(0);
+            else
+                return null;
+        }
+        return null;
+    }
+
+    public Doctor saveDoctor(Doctor doctor){
+        return doctorRepository.save(doctor);
+    }
+
 }

@@ -19,7 +19,6 @@ import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import static com.upc.fullfeedbackend.util.Encryption.createSecretKey;
 
@@ -30,7 +29,7 @@ public class UserService {
     UserRepository userRepository;
 
     @Autowired
-    DoctorRepository doctorRepository;
+    DoctorService doctorService;
 
     @Autowired
     PatientRepository patientRepository;
@@ -41,6 +40,14 @@ public class UserService {
     @Autowired
     RegionService regionService;
 
+    @Autowired
+    MealService mealService;
+
+    @Autowired
+    PersonalTreatmentsService personalTreatmentsService;
+
+    @Autowired
+    NutritionalPlanService nutritionalPlanService;
 
     public User saveUser(User user){
         return userRepository.save(user);
@@ -51,7 +58,7 @@ public class UserService {
     }
 
 
-    public Doctor saveDoctor(RegisterDoctorRequestDTO request){
+    public Doctor registerDoctor(RegisterDoctorRequestDTO request){
         User user = new User();
         user.setDni(request.getDni());
         user.setEmail(request.getEmail());
@@ -73,7 +80,7 @@ public class UserService {
         try {
             user = userRepository.save(user);
             doctor.setUser(user);
-            doctor = doctorRepository.save(doctor);
+            doctor = doctorService.saveDoctor(doctor);
         }catch (Exception e){
             e.getMessage();
         }
@@ -82,7 +89,7 @@ public class UserService {
 
     }
 
-    public Patient savePatient(RegisterPatientRequestDTO request){
+    public Patient registerPatient(RegisterPatientRequestDTO request){
 
         User user = new User();
         user.setDni(request.getDni());
@@ -119,12 +126,38 @@ public class UserService {
         patientLog.setTmb(request.getTmb());
         patientLog.setDate(UtilService.getNowDate());
 
+
+        double calories = UtilService.getCaloriesForPatient(patient);
+
         try {
             user = userRepository.save(user);
             patient.setUser(user);
             patient = patientRepository.save(patient);
             patientLog.setPatient(patient);
             patientLog = patientLogRepository.save(patientLog);
+
+
+            PersonalTreatments personalTreatments = new PersonalTreatments();
+            personalTreatments.setPatient(patient);
+            personalTreatments.setStartDate(UtilService.getNowDate());
+            personalTreatments.setActive((byte) 1);
+
+            Doctor doctor = doctorService.getDoctorWhitMinorPatients();
+
+            personalTreatments.setDoctor(doctor);
+
+            personalTreatments = personalTreatmentsService.savePersonalTreatments(personalTreatments);
+
+            NutritionalPlan nutritionalPlan = new NutritionalPlan();
+            nutritionalPlan.setWeightPatient(patient.getWeight());
+            nutritionalPlan.setCaloriesPlan(redondearCalorias(calories));
+            nutritionalPlan.setIsActive((byte) 1);
+            nutritionalPlan.setPersonalTreatments(personalTreatments);
+
+            nutritionalPlanService.saveNutritionalPlan(nutritionalPlan);
+
+            List<Meal> meals = mealService.generateMonthMealsForPatient(patient.getPatientId(), redondearCalorias(calories) , (int) patient.getWeight());
+
         }catch (Exception e){
             e.getMessage();
         }
@@ -132,6 +165,10 @@ public class UserService {
         return patient;
     }
 
+    public Integer redondearCalorias(double calorias){
+        int cal = (int) Math.round(calorias / 10);
+        return cal * 10;
+    }
 
     public Integer HallarEdadActual(Date date){
         Calendar c = Calendar.getInstance();

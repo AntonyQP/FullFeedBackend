@@ -5,10 +5,7 @@ import com.upc.fullfeedbackend.models.NutritionalPlan;
 import com.upc.fullfeedbackend.models.Patient;
 import com.upc.fullfeedbackend.models.PersonalTreatments;
 import com.upc.fullfeedbackend.models.dto.*;
-import com.upc.fullfeedbackend.services.MealService;
-import com.upc.fullfeedbackend.services.NutritionalPlanService;
-import com.upc.fullfeedbackend.services.PatientLogService;
-import com.upc.fullfeedbackend.services.PersonalTreatmentsService;
+import com.upc.fullfeedbackend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -88,20 +85,14 @@ public class NutritionalPlanController {
             nutritionalPlan.setPersonalTreatments(personalTreatments);
             Patient patient = nutritionalPlan.getPersonalTreatments().getPatient();
             nutritionalPlan.setWeightPatient((int)patient.getWeight());
-
-            double calorias = 0;
-            if (patient.getUser().getSex().equals("m"))
-                calorias = (655 + (9.6 * patient.getWeight())) + ((1.8 * patient.getHeight()) - (4.7 * patient.getAge())) * 1.2;
-            else
-                calorias = (66 + (13.7 * patient.getWeight())) + ((5 * patient.getHeight()) - (6.8 * patient.getAge())) * 1.2;
-
-            nutritionalPlan.setCaloriesPlan(calorias);
+            double calories = UtilService.getCaloriesForPatient(patient);
+            nutritionalPlan.setCaloriesPlan(UtilService.getCaloriesForPatient(patient));
             nutritionalPlan = nutritionalPlanService.createNutritionalPlan(nutritionalPlan);
 
             //[655 + (9,6 × peso en kg) ] + [ (1,8 × altura en cm) – (4,7 × edad)] × Factor actividad. - Mujer
             //[66 + (13,7 × peso en kg) ] + [ (5 × altura en cm) – (6,8 × edad)] × Factor actividad. - Hombre
 
-            List<Meal> meals =  mealService.generateMonthMealsForPatient(patient.getPatientId(), redondearCalorias(calorias), (int)patient.getWeight());
+            List<Meal> meals =  mealService.generateMonthMealsForPatient(patient.getPatientId(), redondearCalorias(calories), (int)patient.getWeight());
 
             nutritionalPlanResponseDTO.setIsActive(nutritionalPlan.getIsActive());
             nutritionalPlanResponseDTO.setNutritionalPlanId(nutritionalPlan.getNutritionalPlanId());
