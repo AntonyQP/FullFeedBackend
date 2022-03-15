@@ -41,13 +41,11 @@ public class PatientService {
         return patientRepository.findByPatientId(patientId);
     }
 
-
     public Integer getTotalLostWeightByPatient(Long patientId){
         Integer lossWeight =  patientRepository.getTotalWeightLoss(patientId);
         if (lossWeight != null) return lossWeight;
         return 0;
     }
-
     public Patient getPatientByUserId(Long userId){
         return patientRepository.findByUser_UserId(userId);
     }
@@ -98,6 +96,10 @@ public class PatientService {
     public Integer redondearCalorias(double calories){
         int cal = (int) Math.round(calories / 10);
         return cal * 10;
+    }
+
+    public Doctor getDoctorByPatient(Long patientId){
+        return personalTreatmentsService.getDoctorByPatient(patientId);
     }
 
 

@@ -105,7 +105,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO<LoginResponseDTO>> login(@RequestBody LoginRequestDTO request) {
 
-        LoginResponseDTO loginResponseDTO = new LoginResponseDTO<Patient>();
+        LoginResponseDTO<Object> loginResponseDTO = new LoginResponseDTO<>();
         User user = userService.findByEmail(request.getEmail());
         ResponseDTO<LoginResponseDTO> responseDTO = new ResponseDTO<>();
 
@@ -149,7 +149,6 @@ public class UserController {
             responseDTO.setErrorCode(1);
             responseDTO.setErrorMessage("User not registered");
             responseDTO.setData(null);
-
         }
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);

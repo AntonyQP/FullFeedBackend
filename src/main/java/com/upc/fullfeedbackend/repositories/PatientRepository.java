@@ -1,5 +1,6 @@
 package com.upc.fullfeedbackend.repositories;
 
+import com.upc.fullfeedbackend.models.Doctor;
 import com.upc.fullfeedbackend.models.Patient;
 import io.swagger.models.auth.In;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,5 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     public Integer getTotalWeightLoss(Long patientId);
 
     public Patient findByUser_UserId(Long userId);
-
 
 }

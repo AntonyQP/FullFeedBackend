@@ -1,9 +1,6 @@
 package com.upc.fullfeedbackend.controllers;
 
-import com.upc.fullfeedbackend.models.Meal;
-import com.upc.fullfeedbackend.models.Patient;
-import com.upc.fullfeedbackend.models.PatientLog;
-import com.upc.fullfeedbackend.models.PatientPreferences;
+import com.upc.fullfeedbackend.models.*;
 import com.upc.fullfeedbackend.models.dto.PatientUpdateDTO;
 import com.upc.fullfeedbackend.models.dto.PreferencesDTO;
 import com.upc.fullfeedbackend.models.dto.PatientProgressDTO;
@@ -15,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.Doc;
 import java.sql.Time;
 import java.time.ZoneId;
 import java.util.*;
@@ -238,5 +236,30 @@ public class PatientController {
         responseDTO.setData(null);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/doctor")
+    public ResponseEntity<ResponseDTO<Doctor>> getActualDoctorByPatient(@RequestParam Long patientId){
+        ResponseDTO<Doctor> responseDTO = new ResponseDTO<>();
+        String errorMessage = "";
+        try {
+            Doctor doctor = patientService.getDoctorByPatient(patientId);
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(doctor);
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+        }catch (Exception e){
+            errorMessage = e.getMessage();
+        }
+
+        responseDTO.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        responseDTO.setErrorCode(1);
+        responseDTO.setErrorMessage(errorMessage);
+        responseDTO.setData(null);
+        
+        return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

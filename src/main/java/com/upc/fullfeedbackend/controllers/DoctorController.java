@@ -22,8 +22,21 @@ public class DoctorController {
     DoctorService doctorService;
 
     @GetMapping()
-    public List<Doctor> getAllDoctors(){
-        return doctorService.getAllDoctors();
+    public ResponseEntity<ResponseDTO<List<Doctor>>> getAllDoctors(){
+        ResponseDTO<List<Doctor>> responseDTO = new ResponseDTO<>();
+        responseDTO.setData(null);
+        try {
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(doctorService.getAllDoctors());
+        }catch (Exception e){
+
+        }
+
+        responseDTO.setErrorCode(1);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/patients")
