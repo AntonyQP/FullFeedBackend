@@ -99,7 +99,8 @@ public class MealService {
     }
 
     public List<Meal> getMealsByDay(Date date, Long patientId){
-        return mealRespository.findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(date, patientId, (byte) 1);
+        List<Meal> meals = mealRespository.findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(date, patientId, (byte) 1);
+        return meals;
     }
 
     public List<Meal> getMealsBetweenDatesAndNutritionalPlan(Date startDate, Date endDate, NutritionalPlan nutritionalPlanService){

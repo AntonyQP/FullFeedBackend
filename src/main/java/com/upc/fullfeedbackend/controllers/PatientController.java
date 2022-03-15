@@ -259,7 +259,7 @@ public class PatientController {
         responseDTO.setErrorCode(1);
         responseDTO.setErrorMessage(errorMessage);
         responseDTO.setData(null);
-        
+
         return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

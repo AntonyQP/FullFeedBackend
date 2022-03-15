@@ -37,7 +37,7 @@ public class UtilService {
 
         String tzCalendar = calendar.getTimeZone().getID();
 
-        if (!tzCalendar.equals("America/Bogota")){
+        if (!tzCalendar.equals("America/Bogota") && calendar.get(Calendar.HOUR)!= 0){
             calendar.add(Calendar.HOUR_OF_DAY, -5);
         }
 

@@ -39,23 +39,23 @@ public class MealController {
 
 
     @GetMapping("/day")
-    private List<Meal> getMealsByDay(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @RequestParam Long patientId){
+    private List<Meal> getMealsByDay(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @RequestParam Long patientId) {
         return mealService.getMealsByDay(normalizeDate(date), patientId);
     }
 
     @GetMapping("/diet-meals")
     private List<Meal> getMealsBetweenDates(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
-                                         @RequestParam Long patientId){
+                                            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+                                            @RequestParam Long patientId) {
         Date sd = normalizeDate(startDate);
         Date ed = normalizeDate(endDate);
         NutritionalPlan nutritionalPlan = nutritionalPlanService.getActiveNutritionalPlanByPatientId(patientId);
 
-        return  mealService.getMealsBetweenDatesAndNutritionalPlan(sd, ed, nutritionalPlan);
+        return mealService.getMealsBetweenDatesAndNutritionalPlan(sd, ed, nutritionalPlan);
     }
 
     @PutMapping("/completeMeal")
-    private ResponseEntity<ResponseDTO<Meal>> completeMeal(@RequestParam Long mealId){
+    private ResponseEntity<ResponseDTO<Meal>> completeMeal(@RequestParam Long mealId) {
         ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
 
         try {
@@ -70,7 +70,7 @@ public class MealController {
 
             return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getMessage();
         }
 
@@ -78,7 +78,7 @@ public class MealController {
     }
 
     @PutMapping("/failedMeal")
-    private ResponseEntity<ResponseDTO<Meal>> failedMeal(@RequestParam Long mealId){
+    private ResponseEntity<ResponseDTO<Meal>> failedMeal(@RequestParam Long mealId) {
         ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
 
         try {
@@ -93,7 +93,7 @@ public class MealController {
 
             return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getMessage();
         }
 
@@ -101,7 +101,7 @@ public class MealController {
     }
 
     @PutMapping("/restoreMeal")
-    private ResponseEntity<ResponseDTO<Meal>> restoreMeal(@RequestParam Long mealId){
+    private ResponseEntity<ResponseDTO<Meal>> restoreMeal(@RequestParam Long mealId) {
         ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
 
         try {
@@ -116,7 +116,7 @@ public class MealController {
 
             return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getMessage();
         }
 
@@ -125,26 +125,26 @@ public class MealController {
 
 
     @PostMapping("/alternativeMeals")
-    private ResponseEntity<ResponseDTO<List<Meal>>> getAlternativeMeals(@RequestBody ApiAlternativesRequest request){
-            ResponseDTO<List<Meal>> responseDTO = new ResponseDTO<>();
+    private ResponseEntity<ResponseDTO<List<Meal>>> getAlternativeMeals(@RequestBody ApiAlternativesRequest request) {
+        ResponseDTO<List<Meal>> responseDTO = new ResponseDTO<>();
 
-            try {
-                responseDTO.setHttpCode(HttpStatus.OK.value());
-                responseDTO.setErrorCode(0);
-                responseDTO.setErrorMessage("");
-                responseDTO.setData(mealService.generateAlternativesMeal(request));
+        try {
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(mealService.generateAlternativesMeal(request));
 
-                return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-
-            }catch (Exception e){
-                e.getMessage();
-            }
             return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
 
     @PutMapping("/replaceMeal")
-    private ResponseEntity<ResponseDTO<Meal>> replaceAlterantiveMeal(@RequestBody Meal requestMeal){
+    private ResponseEntity<ResponseDTO<Meal>> replaceAlterantiveMeal(@RequestBody Meal requestMeal) {
 
         ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
 
@@ -168,7 +168,7 @@ public class MealController {
 
             return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getMessage();
         }
 
@@ -176,7 +176,7 @@ public class MealController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    private Date normalizeDate(Date dt){
+    private Date normalizeDate(Date dt) {
 
         Calendar c = Calendar.getInstance();
         c.setTime(dt);
@@ -188,22 +188,4 @@ public class MealController {
         dt = c.getTime();
         return dt;
     }
-
-    private Date getDate(int diaMas){
-        Date dt = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt);
-        c.add(Calendar.DATE, diaMas);
-        c.set(Calendar.HOUR, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        dt = c.getTime();
-        return dt;
-    }
-
-
-
-
 }
