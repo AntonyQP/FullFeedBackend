@@ -19,8 +19,8 @@ public interface MealRespository extends JpaRepository<Meal, Long> {
 
 
 
-    @Query("select m from Meal m where m.day = ?1 and m.nutritionalPlan.personalTreatments.patient.patientId = ?2 and m.nutritionalPlan.isActive = ?3")
-    public List<Meal> findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(Date day, Long patientId, Byte isActive);
+    @Query("select m from Meal m where m.day = ?1 and m.nutritionalPlan.personalTreatments.patient.patientId = ?2 and m.nutritionalPlan.isActive = 1")
+    public List<Meal> findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(Date day, Long patientId);
 
     @Query("select m from Meal m where m.day >= ?1")
     public List<Meal> findByDayIsGreaterThanEqual(Date day);

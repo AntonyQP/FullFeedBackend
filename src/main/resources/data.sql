@@ -72,12 +72,6 @@ INSERT INTO preferences (`name`,`category_id`) VALUES ('CARAMBOLA', 44);
 
 
 
-
-
-
-
-
-
 INSERT INTO personal_treatment(`active`, `end_date`, `start_date`, `doctor_id`, `patient_id`)
 VALUES (1,now(),now(), 4,4);
 

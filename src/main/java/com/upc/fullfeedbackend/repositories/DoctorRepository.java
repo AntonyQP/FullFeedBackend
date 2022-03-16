@@ -13,7 +13,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     @Query("select d from Doctor d where d.user.userId = ?1")
     public Doctor findByUser_UserId(Long userId);
 
-    @Query("select d from Doctor d where d.activePatients <= 3 order by d.activePatients asc")
+    @Query("select d from Doctor d where d.activePatients <= 100 order by d.activePatients asc")
     public List<Doctor> findDoctorsOrderByActivePatients();
 
 

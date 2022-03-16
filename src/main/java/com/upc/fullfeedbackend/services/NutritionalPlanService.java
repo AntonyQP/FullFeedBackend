@@ -18,8 +18,8 @@ public class NutritionalPlanService {
     }
 
     public NutritionalPlan getActiveNutritionalPlanByPatientId(Long patientId){
-        byte active = 1;
-        return nutritionalPlanRepository.findByPersonalTreatments_Patient_PatientIdAndAndIsActive(patientId, active);
+        NutritionalPlan nutritionalPlan = nutritionalPlanRepository.findByPersonalTreatments_Patient_PatientIdAndIsActive(patientId);
+        return nutritionalPlan;
     }
 
     public NutritionalPlan updateNutritionalPlan(NutritionalPlan nutritionalPlan){

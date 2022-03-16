@@ -54,15 +54,20 @@ public class PatientService {
         Patient patient = patientRepository.findByPatientId(patientId);
 
 
-        PersonalTreatments personalTreatments = new PersonalTreatments();
-        personalTreatments.setPatient(patient);
-        personalTreatments.setStartDate(UtilService.getNowDate());
-        personalTreatments.setActive((byte) 1);
-
+        PersonalTreatments personalTreatmentsAux = new PersonalTreatments();
         Doctor doctor = doctorService.getDoctorWhitMinorPatients();
 
-        personalTreatments.setDoctor(doctor);
+        PersonalTreatments personalTreatments = personalTreatmentsService.getByPatientIdAndActive(patientId);
+        if (personalTreatments == null){
+            personalTreatmentsAux.setPatient(patient);
+            personalTreatmentsAux.setStartDate(UtilService.getNowDate());
+            personalTreatmentsAux.setActive((byte) 1);
+            personalTreatments = personalTreatmentsAux;
+            doctor.setActivePatients(doctor.getActivePatients()== null ? 1 : doctor.getActivePatients() + 1);
+            doctorService.saveDoctor(doctor);
+        }
 
+        personalTreatments.setDoctor(doctor);
         personalTreatments = personalTreatmentsService.savePersonalTreatments(personalTreatments);
 
         double calories = UtilService.getCaloriesForPatient(patient);
@@ -76,9 +81,6 @@ public class PatientService {
         nutritionalPlanService.createNutritionalPlan(nutritionalPlan);
 
         List<Meal> meals = mealService.generateMonthMealsForPatient(patient.getPatientId(), redondearCalorias(calories) , (int) patient.getWeight());
-
-        doctor.setActivePatients(doctor.getActivePatients()== null ? 1 : doctor.getActivePatients() + 1);
-        doctorService.saveDoctor(doctor);
 
         List<Meal> mealsFirstWeek = new ArrayList<>();
         if (meals != null)

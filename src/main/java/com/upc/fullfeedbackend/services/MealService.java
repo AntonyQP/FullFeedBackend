@@ -115,7 +115,7 @@ public class MealService {
     }
 
     public List<Meal> getMealsByDay(Date date, Long patientId){
-        List<Meal> meals = mealRespository.findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(date, patientId, (byte) 1);
+        List<Meal> meals = mealRespository.findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(date, patientId);
         return meals;
     }
 
