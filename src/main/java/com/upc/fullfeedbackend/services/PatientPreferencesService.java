@@ -21,9 +21,8 @@ public class PatientPreferencesService {
         return patientPreferencesRepository.saveAll(patientPreferences);
     }
 
-
-    public PatientPreferences removePatientPrefences(Long patientId, String preference){
-        PatientPreferences patientPreferences =  findByNameAndPatient(patientId, preference);
+    public PatientPreferences removePatientPrefences(Long patientId, Long preferenceId){
+        PatientPreferences patientPreferences =  findByPatientAndPreference(patientId, preferenceId);
         if (patientPreferences != null){
             patientPreferencesRepository.deletePreferenceFromPatient(patientPreferences.getPatientPreferencesId());
             return patientPreferences;
@@ -31,12 +30,20 @@ public class PatientPreferencesService {
         return null;
     }
 
-    public PatientPreferences findByNameAndPatient(Long patientId, String preference){
-        return patientPreferencesRepository.findByPatient_PatientIdAndPreferences_Name(patientId, preference);
+    public PatientPreferences findByPatientAndPreference(Long patientId, Long preferenceId){
+        return patientPreferencesRepository.findByPatientAndPreference(patientId, preferenceId);
     }
 
-    public List<PatientPreferences> findPreferencesByPatient(Long patientId){
-        return  patientPreferencesRepository.findAllByPatient_PatientId(patientId);
+    public List<Preferences> findAllergiesByPatient(Long patientId){
+        return patientPreferencesRepository.getAllergiesByPatient(patientId);
+    }
+
+    public List<Preferences> findFavoritesByPatient(Long patientId){
+        return patientPreferencesRepository.getFavoritesByPatient(patientId);
+    }
+
+    public List<PatientPreferences> findByPatientId(Long patientId){
+        return patientPreferencesRepository.findAllByPatient_PatientId(patientId);
     }
 
 }

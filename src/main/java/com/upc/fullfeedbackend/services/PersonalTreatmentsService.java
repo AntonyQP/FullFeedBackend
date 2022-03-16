@@ -1,6 +1,7 @@
 package com.upc.fullfeedbackend.services;
 
 import com.upc.fullfeedbackend.models.Doctor;
+import com.upc.fullfeedbackend.models.NutritionalPlan;
 import com.upc.fullfeedbackend.models.PersonalTreatments;
 import com.upc.fullfeedbackend.repositories.PersonalTreatmentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,17 @@ public class PersonalTreatmentsService {
 
     public Doctor getDoctorByPatient(Long patientId){
         return personalTreatmentsRepository.getDoctorByPatient(patientId);
+    }
+
+    public PersonalTreatments createNewPersonalTreatment(PersonalTreatments personalTreatments){
+        Long patientId = personalTreatments.getPatient().getPatientId();
+        PersonalTreatments lastPersonalTreatment = getByPatientIdAndActive(patientId);
+        if (lastPersonalTreatment != null){
+            byte desactived = 0;
+            lastPersonalTreatment.setActive(desactived);
+            updatePersonaTreatments(lastPersonalTreatment);
+        }
+        return personalTreatmentsRepository.save(personalTreatments);
     }
 
 }

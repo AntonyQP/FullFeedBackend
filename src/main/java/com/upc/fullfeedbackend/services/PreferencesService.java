@@ -18,8 +18,11 @@ public class PreferencesService {
         return preferencesRepository.findAll();
     }
 
-
     public Preferences findByPreferences(String name){return preferencesRepository.findByName(name);}
+
+    public Preferences findById(Long preferenceId){
+        return preferencesRepository.findById(preferenceId).get();
+    }
 
 
 }

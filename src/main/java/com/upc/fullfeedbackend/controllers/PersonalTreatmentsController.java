@@ -102,7 +102,7 @@ public class PersonalTreatmentsController {
             personalTreatments.setActive((byte) 1);
             personalTreatments.setStartDate(UtilService.getNowDate());
 
-            personalTreatments = personalTreatmentsService.savePersonalTreatments(personalTreatments);
+            personalTreatments = personalTreatmentsService.createNewPersonalTreatment(personalTreatments);
             doctor.setActivePatients(doctor.getActivePatients()== null ? 1 : doctor.getActivePatients() + 1);
             doctorService.saveDoctor(doctor);
 

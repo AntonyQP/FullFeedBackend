@@ -11,8 +11,7 @@ import javax.persistence.Column;
 @NoArgsConstructor
 public class PreferencesDTO {
 
-    @Column(length = 100)
-    private String nombre;
+    private Long preferenceId;
 
     @Column(length = 25)
     private String type;

@@ -3,6 +3,7 @@ package com.upc.fullfeedbackend.services;
 import com.upc.fullfeedbackend.models.Meal;
 import com.upc.fullfeedbackend.models.NutritionalPlan;
 import com.upc.fullfeedbackend.models.Patient;
+import com.upc.fullfeedbackend.models.Preferences;
 import com.upc.fullfeedbackend.models.api.ApiAlternativesRequest;
 import com.upc.fullfeedbackend.models.api.ApiRequest;
 import com.upc.fullfeedbackend.models.api.Dish;
@@ -32,6 +33,9 @@ public class MealService {
     @Autowired
     PatientService patientService;
 
+    @Autowired
+    PatientPreferencesService patientPreferencesService;
+
 
     public List<Meal> getMeals(){
         return null;
@@ -60,6 +64,18 @@ public class MealService {
         apiRequest.setCalories(calories);
         apiRequest.setWeight(weight);
         apiRequest.setRegion(patient.getRegion().getName());
+        List<String> allergies = new ArrayList<>();
+        List<String> favorites = new ArrayList<>();
+        List<Preferences> preferencesAllergies = patientPreferencesService.findAllergiesByPatient(patientId);
+        List<Preferences> preferencesFavorites = patientPreferencesService.findFavoritesByPatient(patientId);
+        for (Preferences allergy : preferencesAllergies){
+            allergies.add(allergy.getName());
+        }
+        for (Preferences favorite : preferencesFavorites){
+            favorites.add(favorite.getName());
+        }
+        apiRequest.setAllergies(allergies);
+        apiRequest.setFavorites(favorites);
 
         HttpEntity<ApiRequest> httpEntity = new HttpEntity<>(apiRequest, headers);
 
