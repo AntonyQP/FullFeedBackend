@@ -139,16 +139,16 @@ public class PatientController {
     }
 
     @PostMapping("/preferences")
-    public ResponseEntity<ResponseDTO<List<PatientPreferences>>> savePreferences(@RequestParam Long pacienteId, @RequestBody List<PreferencesDTO> preferencesDTOList){
+    public ResponseEntity<ResponseDTO<List<PatientPreferences>>> savePreferences(@RequestParam Long patientId, @RequestBody List<PreferencesDTO> preferencesDTOList){
         List<PatientPreferences> patientPreferencesList = new ArrayList<PatientPreferences>();
 
-        Patient patient = patientService.getPatientById(pacienteId);
+        Patient patient = patientService.getPatientById(patientId);
 
         ResponseDTO<List<PatientPreferences>> responseDTO = new ResponseDTO<>();
 
         try {
             for ( PreferencesDTO preference: preferencesDTOList) {
-                PatientPreferences exist = patientPreferencesService.findByPatientAndPreference(pacienteId, preference.getPreferenceId());
+                PatientPreferences exist = patientPreferencesService.findByPatientAndPreference(patientId, preference.getPreferenceId());
                 if (exist != null){
                     responseDTO.setData(null);
                     responseDTO.setHttpCode(HttpStatus.OK.value());
@@ -178,10 +178,10 @@ public class PatientController {
     }
 
     @DeleteMapping("/preferences")
-    public ResponseEntity<ResponseDTO<PatientPreferences>> removePatientPrefences(@RequestParam Long pacienteId, @RequestParam Long preferenceId){
+    public ResponseEntity<ResponseDTO<PatientPreferences>> removePatientPreferences(@RequestParam Long patientId, @RequestParam Long preferenceId){
 
         ResponseDTO<PatientPreferences> responseDTO = new ResponseDTO<>();
-        PatientPreferences patientPreferences = patientPreferencesService.removePatientPrefences(pacienteId,preferenceId);
+        PatientPreferences patientPreferences = patientPreferencesService.removePatientPrefences(patientId,preferenceId);
         if (patientPreferences != null){
             try {
                 responseDTO.setData(patientPreferences);
