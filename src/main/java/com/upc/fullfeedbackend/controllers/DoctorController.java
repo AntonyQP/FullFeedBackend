@@ -2,8 +2,11 @@ package com.upc.fullfeedbackend.controllers;
 
 import com.upc.fullfeedbackend.models.Doctor;
 import com.upc.fullfeedbackend.models.Patient;
+import com.upc.fullfeedbackend.models.dto.PatientsOfDoctorDTO;
 import com.upc.fullfeedbackend.models.dto.ResponseDTO;
 import com.upc.fullfeedbackend.services.DoctorService;
+import com.upc.fullfeedbackend.services.MealService;
+import com.upc.fullfeedbackend.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,6 +24,9 @@ public class DoctorController {
 
     @Autowired
     DoctorService doctorService;
+
+    @Autowired
+    MealService mealService;
 
     @GetMapping()
     public ResponseEntity<ResponseDTO<List<Doctor>>> getAllDoctors(){
@@ -40,12 +47,12 @@ public class DoctorController {
     }
 
     @GetMapping("/patients")
-    public ResponseEntity<ResponseDTO<List<Patient>>> getPatientsByDoctor(@RequestParam Long doctorId){
-        ResponseDTO<List<Patient>> responseDTO = new ResponseDTO<>();
-
+    public ResponseEntity<ResponseDTO<List<PatientsOfDoctorDTO>>> getPatientsByDoctor(@RequestParam Long doctorId){
+        ResponseDTO<List<PatientsOfDoctorDTO>> responseDTO = new ResponseDTO<>();
+        List<PatientsOfDoctorDTO> newPatients = new ArrayList<>();
         try {
-
             List<Patient> patients = doctorService.getPatientsByDoctor(doctorId);
+
             if (patients == null){
                 responseDTO.setHttpCode(HttpStatus.OK.value());
                 responseDTO.setErrorCode(1);
@@ -54,10 +61,16 @@ public class DoctorController {
 
                 return new ResponseEntity<>(responseDTO, HttpStatus.OK);
             }
+
+            for (Patient patient : patients){
+                Integer firstDayWeek = mealService.getFirstDayOfWeekMeal(patient.getPatientId());
+                newPatients.add(PatientsOfDoctorDTO.createFromPatient(patient, firstDayWeek));
+            }
+
             responseDTO.setHttpCode(HttpStatus.OK.value());
             responseDTO.setErrorCode(0);
             responseDTO.setErrorMessage("");
-            responseDTO.setData(patients);
+            responseDTO.setData(newPatients);
 
             return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
