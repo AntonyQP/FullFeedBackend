@@ -22,6 +22,9 @@ public class Doctor {
 
     private Integer activePatients;
 
+    @Column(length = 5)
+    private String accessCode;
+
     @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "userId",nullable = true)
     private User user;

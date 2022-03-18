@@ -36,6 +36,8 @@ public class PatientController {
     @Autowired
     MealService mealService;
 
+    @Autowired
+    DoctorService doctorService;
 
 
     @GetMapping("")
@@ -231,7 +233,7 @@ public class PatientController {
     }
 
     @PostMapping("/generateDiet")
-    public ResponseEntity<ResponseDTO<List<Meal>>> generateDietAtRegister(@RequestParam Long patientId){
+    public ResponseEntity<ResponseDTO<List<Meal>>> generateDietAtRegister(@RequestParam Long patientId, @RequestParam Long doctorId){
 
         ResponseDTO<List<Meal>> responseDTO = new ResponseDTO<>();
         String errorMessage = "";
@@ -240,7 +242,7 @@ public class PatientController {
             responseDTO.setHttpCode(HttpStatus.CREATED.value());
             responseDTO.setErrorCode(0);
             responseDTO.setErrorMessage("");
-            List<Meal> meal = patientService.generateDietByPatient(patientId);
+            List<Meal> meal = patientService.generateDietByPatient(patientId, doctorId);
             if (meal == null){
                 responseDTO.setHttpCode(HttpStatus.OK.value());
                 responseDTO.setErrorCode(1);
@@ -287,5 +289,26 @@ public class PatientController {
         responseDTO.setData(null);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("/validateAccessCode")
+    public ResponseEntity<ResponseDTO<Boolean>> validateAccessCode(@RequestParam String accessCode){
+        ResponseDTO<Boolean> responseDTO = new ResponseDTO<>();
+        try {
+            Boolean access = doctorService.verifyAccessCodeExist(accessCode);
+            responseDTO.setErrorMessage("");
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setData(access);
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        }catch (Exception e){
+
+        }
+        responseDTO.setErrorMessage("Ocurrio un al validar el código de accesso");
+        responseDTO.setHttpCode(HttpStatus.OK.value());
+        responseDTO.setErrorCode(1);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }

@@ -50,4 +50,17 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
+    public Boolean verifyAccessCodeExist(String accessCode){
+        List<Doctor> doctors = doctorRepository.findByAccessCode(accessCode);
+        if (!doctors.isEmpty())
+        {
+            Doctor doctor = doctors.get(0);
+            doctor.setAccessCode(null);
+            doctorRepository.save(doctor);
+            return true;
+        }
+        return false;
+
+    }
+
 }

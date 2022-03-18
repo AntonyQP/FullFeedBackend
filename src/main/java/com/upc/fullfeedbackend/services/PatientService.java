@@ -50,12 +50,12 @@ public class PatientService {
         return patientRepository.findByUser_UserId(userId);
     }
 
-    public List<Meal> generateDietByPatient(Long patientId){
+    public List<Meal> generateDietByPatient(Long patientId, Long doctorId){
         Patient patient = patientRepository.findByPatientId(patientId);
 
 
         PersonalTreatments personalTreatmentsAux = new PersonalTreatments();
-        Doctor doctor = doctorService.getDoctorWhitMinorPatients();
+        Doctor doctor = doctorService.getDoctorById(doctorId);
 
         PersonalTreatments personalTreatments = personalTreatmentsService.getByPatientIdAndActive(patientId);
         if (personalTreatments == null){
