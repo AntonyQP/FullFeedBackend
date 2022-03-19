@@ -7,6 +7,8 @@ import com.upc.fullfeedbackend.repositories.PersonalTreatmentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.rmi.CORBA.Util;
+
 @Service
 public class PersonalTreatmentsService {
 
@@ -40,6 +42,7 @@ public class PersonalTreatmentsService {
         if (lastPersonalTreatment != null){
             byte desactived = 0;
             lastPersonalTreatment.setActive(desactived);
+            lastPersonalTreatment.setEndDate(UtilService.getNowDate());
             updatePersonaTreatments(lastPersonalTreatment);
         }
         return personalTreatmentsRepository.save(personalTreatments);

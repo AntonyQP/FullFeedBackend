@@ -5,6 +5,7 @@ import com.upc.fullfeedbackend.models.NutritionalPlan;
 import com.upc.fullfeedbackend.models.api.ApiAlternativesRequest;
 import com.upc.fullfeedbackend.models.api.ApiRequest;
 import com.upc.fullfeedbackend.models.api.Dish;
+import com.upc.fullfeedbackend.models.dto.ReplaceMealRequestDTO;
 import com.upc.fullfeedbackend.models.dto.ResponseDTO;
 import com.upc.fullfeedbackend.services.MealService;
 import com.upc.fullfeedbackend.services.NutritionalPlanService;
@@ -144,7 +145,7 @@ public class MealController {
     }
 
     @PutMapping("/replaceMeal")
-    private ResponseEntity<ResponseDTO<Meal>> replaceAlterantiveMeal(@RequestBody Meal requestMeal) {
+    private ResponseEntity<ResponseDTO<Meal>> replaceAlterantiveMeal(@RequestBody ReplaceMealRequestDTO requestMeal) {
 
         ResponseDTO<Meal> responseDTO = new ResponseDTO<>();
 
