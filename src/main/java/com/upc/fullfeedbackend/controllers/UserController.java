@@ -2,10 +2,7 @@ package com.upc.fullfeedbackend.controllers;
 
 import com.upc.fullfeedbackend.models.*;
 import com.upc.fullfeedbackend.models.dto.*;
-import com.upc.fullfeedbackend.services.DoctorService;
-import com.upc.fullfeedbackend.services.MealService;
-import com.upc.fullfeedbackend.services.PatientService;
-import com.upc.fullfeedbackend.services.UserService;
+import com.upc.fullfeedbackend.services.*;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +108,7 @@ public class UserController {
 
         Integer day = 0;
         if (user != null) {
-            String pass = userService.DesencriptarContrasena(user.getPassword());
+            String pass = UtilService.desencriptarContrasena(user.getPassword());
             if (pass.equals(request.getPassword())){
                 if (user.getRol().equals("p")){
                     Patient patient = patientService.getPatientByUserId(user.getUserId());
@@ -175,5 +172,50 @@ public class UserController {
         return token;
     }
 
+    @PostMapping("/recoverPassword")
+    private ResponseEntity<ResponseDTO<String>> restorePassword(@RequestParam String email){
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        try {
+            String result = userService.restorePassword(email);
+
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(result);
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        }catch (Exception e){
+
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/updatePassword")
+    private ResponseEntity<ResponseDTO<String>> updatePassword(@RequestParam String email, @RequestParam String actualPassword, @RequestParam String newPassword){
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+
+        try {
+
+            String result = userService.updatePassword(email, actualPassword, newPassword);
+
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorMessage("");
+            responseDTO.setErrorCode(0);
+            responseDTO.setData(result);
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        responseDTO.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        responseDTO.setErrorMessage("Ocurrio un problema al actualizar la contraseña");
+        responseDTO.setErrorCode(1);
+        responseDTO.setData(null);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
 
 }

@@ -70,7 +70,7 @@ public class UserService {
         user.setRol("d");
         user.setSex(request.getSex());
         user.setUsername(request.getUsername());
-        String newPassword = EncriptarContrasena(request.getPassword());
+        String newPassword = UtilService.encriptarContrasena(request.getPassword());
         user.setPassword(newPassword);
 
         Doctor doctor = new Doctor();
@@ -103,7 +103,7 @@ public class UserService {
         user.setRol(request.getRol());
         user.setSex(request.getSex());
         user.setUsername(request.getUsername());
-        String newPassword = EncriptarContrasena(request.getPassword());
+        String newPassword = UtilService.encriptarContrasena(request.getPassword());
         user.setPassword(newPassword);
 
         Patient patient = new Patient();
@@ -158,26 +158,7 @@ public class UserService {
         return  age.getYears();
     }
 
-    public String  EncriptarContrasena (String contrasena){
 
-        byte[] salt = new String("12345678").getBytes();
-        int iterationCount = 40000;
-        int keyLength = 128;
-        SecretKeySpec key = null;
-        try {
-            key = createSecretKey("contrasena".toCharArray(), salt, iterationCount, keyLength);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-        String nueva = contrasena;
-        try {
-            nueva = Encryption.encrypt(contrasena, key);
-        } catch (GeneralSecurityException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return nueva;
-    }
 
     public User findByDni(String dni){
         return userRepository.findByDni(dni);
@@ -187,25 +168,42 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public String  DesencriptarContrasena (String contrasena){
+    public String restorePassword(String email){
 
-        byte[] salt = new String("12345678").getBytes();
-        int iterationCount = 40000;
-        int keyLength = 128;
-        SecretKeySpec key = null;
-        try {
-            key = createSecretKey("contrasena".toCharArray(), salt, iterationCount, keyLength);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-        String nueva = contrasena;
-        try {
-            nueva = Encryption.decrypt(contrasena, key);
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
+        User user = userRepository.findByEmail(email);
 
-        return nueva;
+        String result = "";
+
+        if (user!= null){
+            String newPassword = UtilService.randomPassword();
+            String encryptedPassword = UtilService.encriptarContrasena(newPassword);
+            user.setPassword(encryptedPassword);
+            user = userRepository.save(user);
+            result = UtilService.sendForgetPassword(user, newPassword);
+            if (result == null){
+                return "Ocurrio un error al enviar el correo";
+            }
+            return "Se ha enviado un correo a " + user.getEmail();
+
+        } else {
+            return "El correo no se encuentra registrado";
+        }
+    }
+
+    public String updatePassword(String email, String actualPassword, String newPassword){
+        User user = findByEmail(email);
+        if (user == null){
+            return "El usuario no existe";
+        }
+        String actualPasswordDecrypted = UtilService.desencriptarContrasena(user.getPassword());
+        if (actualPasswordDecrypted.equals(actualPassword)){
+            String newPasswordEncrypted = UtilService.encriptarContrasena(newPassword);
+            user.setPassword(newPasswordEncrypted);
+            userRepository.save(user);
+            return "La contraseña de actualizo correctamente";
+        } else {
+            return "La contraseña actual no es válida.";
+        }
     }
 
 }

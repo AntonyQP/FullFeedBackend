@@ -86,7 +86,7 @@ public class PatientService {
         if (meals != null)
         {
             if (meals.size() > 0) {
-                for (int i = 0; i< 7; i++) {
+                for (int i = 0; i< 35; i++) {
                     mealsFirstWeek.add(meals.get(i));
                 }
                 return mealsFirstWeek;

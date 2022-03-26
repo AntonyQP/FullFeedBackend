@@ -90,7 +90,7 @@ public class DoctorController {
 
         try {
             Doctor doctor = doctorService.getDoctorById(doctorId);
-            String accessCode = UtilService.RandomString();
+            String accessCode = UtilService.randomString();
             doctor.setAccessCode(accessCode);
             doctorService.saveDoctor(doctor);
 

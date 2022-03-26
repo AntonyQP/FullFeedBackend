@@ -33,42 +33,42 @@ INSERT INTO category(`name`) VALUES ('MARISCOS');
 INSERT INTO category(`name`) VALUES ('TUBERCULOS');
 INSERT INTO category(`name`) VALUES ('FRUTAS');
 
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CERDO',     4);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CABRITO',   4);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('RES',       4);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('PESCADO',   4);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CORDERO',   4);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CUY',       4);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CERDO',     1);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CABRITO',   1);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('RES',       1);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('PESCADO',   1);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CORDERO',   1);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CUY',       1);
 
-INSERT INTO preferences (`name`,`category_id`) VALUES ('ZAPALLO',   14);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CHOCLO',    14);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('APIO',      14);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('BETERRAGA', 14);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('TOMATE',    14);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('ACEITUNA',  14);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CULANTRO',  14);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('BROCOLI',   14);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CAIGUA',    14);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('ZAPALLO',   2);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CHOCLO',    2);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('APIO',      2);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('BETERRAGA', 2);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('TOMATE',    2);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('ACEITUNA',  2);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CULANTRO',  2);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('BROCOLI',   2);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CAIGUA',    2);
 
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CANGREJO',   24);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('LANGOSTINO', 24);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CHORO',      24);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('ALMEJA',     24);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CAMARON',    24);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CANGREJO',   3);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('LANGOSTINO', 3);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CHORO',      3);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('ALMEJA',     3);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CAMARON',    3);
 
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CAMOTE',    34);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('OLLUCO',    34);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('PAPA',      34);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('YUCA',      34);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CAMOTE',    4);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('OLLUCO',    4);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('PAPA',      4);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('YUCA',      4);
 
-INSERT INTO preferences (`name`,`category_id`) VALUES ('MANZANA',   44);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('PIÑA',      44);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('NARANJA',   44);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('PAPAYA',    44);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('MANDARINA', 44);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('TUNA',      44);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('PLATANO',   44);
-INSERT INTO preferences (`name`,`category_id`) VALUES ('CARAMBOLA', 44);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('MANZANA',   5);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('PIÑA',      5);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('NARANJA',   5);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('PAPAYA',    5);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('MANDARINA', 5);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('TUNA',      5);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('PLATANO',   5);
+INSERT INTO preferences (`name`,`category_id`) VALUES ('CARAMBOLA', 5);
 
 
 

@@ -1,6 +1,7 @@
 package com.upc.fullfeedbackend;
 
 import com.upc.fullfeedbackend.security.JWTAuthorizationFilter;
+import com.upc.fullfeedbackend.services.UtilService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +21,6 @@ public class FullFeedBackendApplication{
     @Configuration
     class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        //        @Override
-//        public void configure(WebSecurity web) throws Exception {
-//            web.ignoring().antMatchers( "/swagger-resources/**",
-//                    "/swagger-ui.html",
-//                    "/v2/api-docs",
-//                    "/webjars/**");
-//        }
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()

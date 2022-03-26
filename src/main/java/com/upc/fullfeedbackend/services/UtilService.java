@@ -1,11 +1,26 @@
 package com.upc.fullfeedbackend.services;
 
 import com.upc.fullfeedbackend.models.Patient;
+import com.upc.fullfeedbackend.models.User;
+import com.upc.fullfeedbackend.util.Encryption;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Random;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.crypto.spec.SecretKeySpec;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
+
+import static com.upc.fullfeedbackend.util.Encryption.createSecretKey;
 
 public class UtilService {
 
@@ -57,33 +72,130 @@ public class UtilService {
         return calorias;
     }
 
-
-    public static String RandomString() {
-        // create a string of all characters
+    public static String randomString() {
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-        // create random string builder
         StringBuilder sb = new StringBuilder();
-
-        // create an object of Random class
         Random random = new Random();
-
-        // specify length of random string
         int length = 5;
-
         for(int i = 0; i < length; i++) {
-
-            // generate random index number
             int index = random.nextInt(alphabet.length());
-
-            // get character specified by index
-            // from the string
             char randomChar = alphabet.charAt(index);
-
-            // append the character to string builder
             sb.append(randomChar);
         }
         String randomString = sb.toString();
         return randomString;
     }
+
+    public static String randomPassword() {
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxz1234567890";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        int length = 7;
+        for(int i = 0; i < length; i++) {
+            int index = random.nextInt(alphabet.length());
+            char randomChar = alphabet.charAt(index);
+            sb.append(randomChar);
+        }
+        String randomString = sb.toString();
+        return randomString;
+    }
+
+    public static String  encriptarContrasena (String contrasena){
+
+        byte[] salt = new String("12345678").getBytes();
+        int iterationCount = 40000;
+        int keyLength = 128;
+        SecretKeySpec key = null;
+        try {
+            key = createSecretKey("contrasena".toCharArray(), salt, iterationCount, keyLength);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        String nueva = contrasena;
+        try {
+            nueva = Encryption.encrypt(contrasena, key);
+        } catch (GeneralSecurityException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return nueva;
+    }
+    public static String  desencriptarContrasena (String contrasena){
+
+        byte[] salt = new String("12345678").getBytes();
+        int iterationCount = 40000;
+        int keyLength = 128;
+        SecretKeySpec key = null;
+        try {
+            key = createSecretKey("contrasena".toCharArray(), salt, iterationCount, keyLength);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        String nueva = contrasena;
+        try {
+            nueva = Encryption.decrypt(contrasena, key);
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return nueva;
+    }
+
+
+    public static String sendForgetPassword(User user, String newPassword){
+        Properties properties = new Properties();
+
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.starttls.required", "true");
+        properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+        String myAccountEmail = "fullfeedapp@gmail.com";
+        String password = "bryanxd123";
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(myAccountEmail,password);
+            }
+        });
+
+        Message message = prepareMessage(session, myAccountEmail, user, newPassword);
+
+        try {
+            Transport.send(message);
+            System.out.println("Mensaje enviado correctamente");
+            return "Se ha enviado el email";
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static Message prepareMessage(Session session, String myAccountEmail, User user, String newPassword) {
+        Message message = new MimeMessage(session);
+        try {
+            message.setFrom(new InternetAddress(myAccountEmail));
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
+            message.setSubject("Recuperación de contraseña - FullFeedApp");
+            StringBuffer content = new StringBuffer();
+            content.append("Estimado ").append(user.getFirstName()).append(",\n\n")
+                    .append("Su contraseña se ha reiniciado a : ").append(newPassword).append("\n")
+                    .append("No se olvide de actualizarla antes de seguir usando la aplicación.").append("\n\n")
+                    .append("Atentamente la familida de FullFeedApp.");
+            message.setText(content.toString());
+            return message;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+    
+
+
 }
