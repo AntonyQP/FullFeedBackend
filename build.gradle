@@ -14,6 +14,20 @@ configurations {
     }
 }
 
+
+azurewebapp {
+    subscription = 'a9135b75-5cea-4d8c-9525-1d00f3fa2b9e'
+    resourceGroup = 'FULLFEED'
+    appName = 'fullfeed-backend'
+    pricingTier = 'B1'
+    region = 'eastus'
+    runtime {
+        os = 'Linux'
+        webContainer = 'Java SE'
+        javaVersion = 'Java 8'
+    }
+}
+
 repositories {
     mavenCentral()
 }

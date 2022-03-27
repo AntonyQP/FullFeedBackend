@@ -79,6 +79,8 @@ public class MealService {
 
         HttpEntity<ApiRequest> httpEntity = new HttpEntity<>(apiRequest, headers);
 
+        System.out.println(httpEntity);
+
         Dish[][] dishes = restTemplate.postForObject(url, httpEntity, Dish[][].class);
 
         List<Meal> meals = new ArrayList<>();
