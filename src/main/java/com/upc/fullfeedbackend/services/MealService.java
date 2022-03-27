@@ -51,7 +51,7 @@ public class MealService {
 
     public List<Meal> generateMonthMealsForPatient(Long patientId, Integer calories, Integer weight){
 
-        String url = "https://fullfeedflask-app.herokuapp.com/diet-month";
+        String url = "https://fullfeed-algorithm.azurewebsites.net/diet-month";
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -132,7 +132,7 @@ public class MealService {
     }
 
     public List<Meal> generateAlternativesMeal(ApiAlternativesRequest request){
-        String url = "https://fullfeedflask-app.herokuapp.com/alternatives";
+        String url = "https://fullfeed-algorithm.azurewebsites.net/alternatives";
 
         RestTemplate restTemplate = new RestTemplate();
 
