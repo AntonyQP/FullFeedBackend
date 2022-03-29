@@ -30,15 +30,6 @@ public class MealController {
     @Autowired
     NutritionalPlanService nutritionalPlanService;
 
-//    @PostMapping("/generate-two-weeks-meals")
-//    private List<Meal> saveMeals(@RequestParam Long patientId,
-//                                 @RequestParam Integer calories,
-//                                 @RequestParam Integer weight){
-//
-//        return mealService.generateTwoWeeksMealsForPatient(patientId, calories, weight);
-//    }
-
-
     @GetMapping("/day")
     private List<Meal> getMealsByDay(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @RequestParam Long patientId) {
         return mealService.getMealsByDay(normalizeDate(date), patientId);
@@ -141,7 +132,6 @@ public class MealController {
             e.getMessage();
         }
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-
     }
 
     @PutMapping("/replaceMeal")

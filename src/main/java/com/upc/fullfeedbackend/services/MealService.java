@@ -163,8 +163,6 @@ public class MealService {
             meal.setImageUrl("");
             meals.add(meal);
         }
-
-
         return meals;
     }
 

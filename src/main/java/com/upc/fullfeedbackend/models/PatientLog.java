@@ -31,4 +31,5 @@ public class PatientLog {
     private float tmb;
     private Date date;
 
+
 }
