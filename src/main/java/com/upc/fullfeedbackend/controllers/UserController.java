@@ -65,7 +65,6 @@ public class UserController {
     private ResponseEntity<ResponseDTO<Patient>> registerPatient(@RequestBody RegisterPatientRequestDTO request) {
         ResponseDTO<Patient> registerResponseDTO = new ResponseDTO<>();
 
-
         User existentUser = userService.findByDni(request.getDni());
         if (existentUser != null) {
             registerResponseDTO.setErrorCode(1);

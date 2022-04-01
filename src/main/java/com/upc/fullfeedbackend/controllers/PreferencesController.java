@@ -41,10 +41,10 @@ public class PreferencesController {
         return new ResponseEntity<>(null , HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("")
-    public ResponseEntity<ResponseDTO<List<Preferences>>> saveAllPreferences(){
-        return null;
-    }
+//    @PostMapping("")
+//    public ResponseEntity<ResponseDTO<List<Preferences>>> saveAllPreferences(){
+//        return null;
+//    }
 
 
 }

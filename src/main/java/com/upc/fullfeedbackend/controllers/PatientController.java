@@ -49,6 +49,7 @@ public class PatientController {
     public PatientLog savePatientLog(@RequestBody PatientLog patientLog){
         return patientLogService.savePatientLog(patientLog);
     }
+
     @PutMapping("/updatePatient")
     public ResponseEntity<ResponseDTO<Patient>> updatePatient(@RequestBody PatientUpdateDTO patientUpdateDTO){
 
@@ -228,7 +229,6 @@ public class PatientController {
         }catch (Exception e){
             e.getMessage();
         }
-
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 

@@ -108,6 +108,7 @@ public class MealService {
 
                 meal.setDay(UtilService.getNowDateMealsWhitAddDays(indexDay));
 
+                meal.setImageUrl("");
                 meals.add(meal);
             }
             indexDay++;
