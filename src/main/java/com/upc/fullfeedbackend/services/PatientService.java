@@ -63,13 +63,12 @@ public class PatientService {
             personalTreatmentsAux.setStartDate(UtilService.getNowDate());
             personalTreatmentsAux.setActive((byte) 1);
             personalTreatments = personalTreatmentsAux;
-            doctor.setActivePatients(personalTreatmentsService.getActivePatientsByDoctor(doctorId));
-            doctorService.saveDoctor(doctor);
-        } else {
-            personalTreatments.setDoctor(doctor);
-            personalTreatments = personalTreatmentsService.savePersonalTreatments(personalTreatments);
         }
+        personalTreatments.setDoctor(doctor);
+        personalTreatments = personalTreatmentsService.savePersonalTreatments(personalTreatments);
 
+        doctor.setActivePatients(personalTreatmentsService.getActivePatientsByDoctor(doctorId));
+        doctorService.saveDoctor(doctor);
 
         double calories = UtilService.getCaloriesForPatient(patient);
 
