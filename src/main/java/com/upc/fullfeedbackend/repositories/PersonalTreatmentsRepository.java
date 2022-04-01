@@ -25,5 +25,8 @@ public interface PersonalTreatmentsRepository extends JpaRepository<PersonalTrea
     @Query("select p.doctor from PersonalTreatments p where p.patient.patientId = ?1 and p.active = 1")
     public Doctor getDoctorByPatient(Long patientId);
 
+    @Query("select count(p) from PersonalTreatments p where p.active = 1 and p.doctor.doctorId = ?1")
+    public Integer countActivePatientsByDoctor(Long doctorId);
+
 
 }

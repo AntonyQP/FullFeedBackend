@@ -48,4 +48,8 @@ public class PersonalTreatmentsService {
         return personalTreatmentsRepository.save(personalTreatments);
     }
 
+    public Integer getActivePatientsByDoctor(Long doctorId){
+        return personalTreatmentsRepository.countActivePatientsByDoctor(doctorId);
+    }
+
 }
