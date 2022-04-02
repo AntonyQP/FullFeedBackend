@@ -238,11 +238,10 @@ public class PatientController {
         ResponseDTO<List<Meal>> responseDTO = new ResponseDTO<>();
         String errorMessage = "";
         try {
-
             responseDTO.setHttpCode(HttpStatus.CREATED.value());
             responseDTO.setErrorCode(0);
             responseDTO.setErrorMessage("");
-            List<Meal> meal = patientService.generateDietByPatient(patientId, doctorId);
+            List<Meal> meal = patientService.generateFirstDietToPatient(patientId, doctorId);
             if (meal == null){
                 responseDTO.setHttpCode(HttpStatus.OK.value());
                 responseDTO.setErrorCode(1);

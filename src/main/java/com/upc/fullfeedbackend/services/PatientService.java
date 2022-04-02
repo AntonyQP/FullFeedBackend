@@ -50,7 +50,7 @@ public class PatientService {
         return patientRepository.findByUser_UserId(userId);
     }
 
-    public List<Meal> generateDietByPatient(Long patientId, Long doctorId){
+    public List<Meal> generateFirstDietToPatient(Long patientId, Long doctorId){
         Patient patient = patientRepository.findByPatientId(patientId);
 
 

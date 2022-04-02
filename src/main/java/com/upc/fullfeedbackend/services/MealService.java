@@ -87,6 +87,7 @@ public class MealService {
 
         NutritionalPlan nutritionalPlan = nutritionalPlanService.getActiveNutritionalPlanByPatientId(patientId);
 
+        System.out.println(UtilService.getNowDateMealsWhitAddDays(0));
         int indexDay = 1;
         for (Dish[] dishList: dishes) {
             for (Dish dish: dishList) {
