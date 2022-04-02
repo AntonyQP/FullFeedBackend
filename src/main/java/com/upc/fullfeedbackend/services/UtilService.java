@@ -5,6 +5,7 @@ import com.upc.fullfeedbackend.models.User;
 import com.upc.fullfeedbackend.util.Encryption;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.tomcat.jni.Local;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
@@ -13,6 +14,14 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.crypto.spec.SecretKeySpec;
@@ -43,10 +52,10 @@ public class UtilService {
     public static Date getNowDateMealsWhitAddDays(Integer days){
         //Cambiar cuando se suba a Amazon
 
+        System.out.println(TimeZone.getAvailableIDs());
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-
-        System.out.println(calendar.getTime());
 
         String tzCalendar = calendar.getTimeZone().getID();
 
@@ -63,6 +72,25 @@ public class UtilService {
         calendar.add(Calendar.DATE, days);
         System.out.println(calendar.getTime());
         return calendar.getTime();
+    }
+
+
+    public static String getDATETET(){
+
+        LocalDateTime oldDateTime = LocalDateTime.now();
+
+        ZoneId oldZone = ZoneId.of(TimeZone.getDefault().getID());
+
+        ZoneId newZone = ZoneId.of("America/Lima");
+
+        LocalDateTime newDateTime = oldDateTime.atZone(oldZone)
+                .withZoneSameInstant(newZone)
+                .toLocalDateTime();
+        System.out.println(newDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        System.out.println(newDateTime);
+
+        return newDateTime.toString();
+
     }
 
     public static Double getCaloriesForPatient(Patient patient){

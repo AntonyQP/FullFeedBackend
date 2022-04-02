@@ -31,6 +31,11 @@ public class UserController {
     MealService mealService;
 
 
+    @GetMapping("/hora")
+    public String hora(){
+        return UtilService.getDATETET();
+    }
+
     @PostMapping("/doctor")
     public ResponseEntity<ResponseDTO<Doctor>> registerDoctor(@RequestBody RegisterDoctorRequestDTO request) {
 

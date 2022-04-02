@@ -14,7 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class FullFeedBackendApplication{
 
     public static void main(String[] args) {
-        SpringApplication.run(FullFeedBackendApplication.class, args);
+        UtilService.getDATETET();
+       //SpringApplication.run(FullFeedBackendApplication.class, args);
     }
 
     @EnableWebSecurity
