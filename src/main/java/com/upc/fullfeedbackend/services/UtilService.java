@@ -33,6 +33,7 @@ import static com.upc.fullfeedbackend.util.Encryption.createSecretKey;
 
 public class UtilService {
 
+    private static final ZoneId oldZone = ZoneId.of(TimeZone.getDefault().getID());
 
     public static Date getNowDate(){
         //Cambiar cuando se suba a Amazon
@@ -49,29 +50,43 @@ public class UtilService {
     }
 
 
-    public static Date getNowDateMealsWhitAddDays(Integer days){
-        //Cambiar cuando se suba a Amazon
+    public static LocalDate getNowDateMealsWhitAddDays(Integer days){
 
-        System.out.println(TimeZone.getAvailableIDs());
+        LocalDateTime oldDateTime = LocalDateTime.now();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
+        ZoneId newZone = ZoneId.of("America/Lima");
 
-        String tzCalendar = calendar.getTimeZone().getID();
+        LocalDateTime newDateTime = oldDateTime.atZone(oldZone)
+                .withZoneSameInstant(newZone)
+                .toLocalDateTime();
 
-        if (!tzCalendar.equals("America/Bogota") && calendar.get(Calendar.HOUR)!= 0){
-            calendar.add(Calendar.HOUR_OF_DAY, -5);
-        }
+        System.out.println(newDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        System.out.println(newDateTime.toLocalDate());
 
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        return newDateTime.toLocalDate().plusDays(days);
 
-        calendar.add(Calendar.DATE, days);
-        System.out.println(calendar.getTime());
-        return calendar.getTime();
+
+
+//        System.out.println(TimeZone.getAvailableIDs());
+//
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(new Date());
+//
+//        String tzCalendar = calendar.getTimeZone().getID();
+//
+//        if (!tzCalendar.equals("America/Bogota") && calendar.get(Calendar.HOUR)!= 0){
+//            calendar.add(Calendar.HOUR_OF_DAY, -5);
+//        }
+//
+//        calendar.set(Calendar.HOUR, 0);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.set(Calendar.MILLISECOND, 0);
+//        calendar.set(Calendar.HOUR_OF_DAY, 0);
+//
+//        calendar.add(Calendar.DATE, days);
+//        System.out.println(calendar.getTime());
+//        return calendar.getTime();
     }
 
 
@@ -79,17 +94,17 @@ public class UtilService {
 
         LocalDateTime oldDateTime = LocalDateTime.now();
 
-        ZoneId oldZone = ZoneId.of(TimeZone.getDefault().getID());
-
         ZoneId newZone = ZoneId.of("America/Lima");
 
         LocalDateTime newDateTime = oldDateTime.atZone(oldZone)
                 .withZoneSameInstant(newZone)
                 .toLocalDateTime();
-        System.out.println(newDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        System.out.println(newDateTime);
 
-        return newDateTime.toString();
+        System.out.println(newDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+
+        System.out.println(newDateTime.toLocalDate());
+
+        return newDateTime.toLocalDate().toString();
 
     }
 
