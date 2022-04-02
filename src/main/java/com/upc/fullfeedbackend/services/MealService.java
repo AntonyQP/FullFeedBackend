@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.*;
 
@@ -118,12 +119,12 @@ public class MealService {
         return mealRespository.saveAll(meals);
     }
 
-    public List<Meal> getMealsByDay(Date date, Long patientId){
+    public List<Meal> getMealsByDay(LocalDate date, Long patientId){
         List<Meal> meals = mealRespository.findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(date, patientId);
         return meals;
     }
 
-    public List<Meal> getMealsBetweenDatesAndNutritionalPlan(Date startDate, Date endDate, NutritionalPlan nutritionalPlanService){
+    public List<Meal> getMealsBetweenDatesAndNutritionalPlan(LocalDate startDate, LocalDate endDate, NutritionalPlan nutritionalPlanService){
         return mealRespository.findByDayIsGreaterThanEqualAndDayIsLessThanEqualAndNutritionalPlan(startDate, endDate, nutritionalPlanService);
     }
 

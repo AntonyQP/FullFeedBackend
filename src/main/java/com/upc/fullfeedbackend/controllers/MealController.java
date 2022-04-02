@@ -15,6 +15,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -31,19 +32,18 @@ public class MealController {
     NutritionalPlanService nutritionalPlanService;
 
     @GetMapping("/day")
-    private List<Meal> getMealsByDay(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @RequestParam Long patientId) {
-        return mealService.getMealsByDay(normalizeDate(date), patientId);
+    private List<Meal> getMealsByDay(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, @RequestParam Long patientId) {
+        return mealService.getMealsByDay(date, patientId);
     }
 
     @GetMapping("/diet-meals")
-    private List<Meal> getMealsBetweenDates(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+    private List<Meal> getMealsBetweenDates(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                                            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
                                             @RequestParam Long patientId) {
-        Date sd = normalizeDate(startDate);
-        Date ed = normalizeDate(endDate);
+
         NutritionalPlan nutritionalPlan = nutritionalPlanService.getActiveNutritionalPlanByPatientId(patientId);
 
-        return mealService.getMealsBetweenDatesAndNutritionalPlan(sd, ed, nutritionalPlan);
+        return mealService.getMealsBetweenDatesAndNutritionalPlan(startDate, endDate, nutritionalPlan);
     }
 
     @PutMapping("/completeMeal")

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +21,13 @@ public interface MealRespository extends JpaRepository<Meal, Long> {
 
 
     @Query("select m from Meal m where m.day = ?1 and m.nutritionalPlan.personalTreatments.patient.patientId = ?2 and m.nutritionalPlan.isActive = 1")
-    public List<Meal> findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(Date day, Long patientId);
+    public List<Meal> findByDayAndNutritionalPlan_PersonalTreatments_Patient_PatientIdAndNutritionalPlan_IsActive(LocalDate day, Long patientId);
 
     @Query("select m from Meal m where m.day >= ?1")
     public List<Meal> findByDayIsGreaterThanEqual(Date day);
 
     @Query("select m from Meal m where m.day >= ?1 and m.day <= ?2 and m.nutritionalPlan = ?3")
-    public List<Meal> findByDayIsGreaterThanEqualAndDayIsLessThanEqualAndNutritionalPlan(Date startDate, Date endDay, NutritionalPlan nutritionalPlan);
+    public List<Meal> findByDayIsGreaterThanEqualAndDayIsLessThanEqualAndNutritionalPlan(LocalDate startDate, LocalDate endDay, NutritionalPlan nutritionalPlan);
 
 
     @Query("select count(m) from Meal m where m.status = ?1 and m.nutritionalPlan.personalTreatments.patient.patientId = ?2")
