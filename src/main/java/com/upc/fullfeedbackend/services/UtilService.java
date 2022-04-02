@@ -46,6 +46,8 @@ public class UtilService {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
 
+        System.out.println(calendar.getTime());
+
         String tzCalendar = calendar.getTimeZone().getID();
 
         if (!tzCalendar.equals("America/Bogota") && calendar.get(Calendar.HOUR)!= 0){
@@ -58,11 +60,8 @@ public class UtilService {
         calendar.set(Calendar.MILLISECOND, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
 
-
-
-
         calendar.add(Calendar.DATE, days);
-
+        System.out.println(calendar.getTime());
         return calendar.getTime();
     }
 
