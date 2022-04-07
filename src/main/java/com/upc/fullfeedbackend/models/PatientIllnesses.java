@@ -20,11 +20,11 @@ public class PatientIllnesses {
     private Long patientIllnessesId;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "patientId",nullable = false)
+    @JoinColumn(name = "patientId",nullable = true)
     private Patient patient;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "illnessesId",nullable = false)
+    @JoinColumn(name = "illnessesId",nullable = true)
     private Illnesses illnesses;
 
 }

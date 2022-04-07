@@ -170,14 +170,14 @@ public class NutritionalPlanController {
             List<WeightEvolutionResponseDTO> listWeight = patientLogService.getWeightHistorial(patientId);
             if (listWeight == null){
                 responseDTO.setHttpCode(HttpStatus.OK.value());
-                responseDTO.setErrorCode(1);;
+                responseDTO.setErrorCode(1);
                 responseDTO.setErrorMessage("No se encontro un historial para el paciente");
                 responseDTO.setData(null);
                 return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
             }
             responseDTO.setHttpCode(HttpStatus.OK.value());
-            responseDTO.setErrorCode(0);;
+            responseDTO.setErrorCode(0);
             responseDTO.setErrorMessage("");
             responseDTO.setData(listWeight);
             return new ResponseEntity<>(responseDTO, HttpStatus.OK);

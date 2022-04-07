@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -29,7 +30,7 @@ public class PatientLog {
     private float arm;
     private float abdominal;
     private float tmb;
-    private Date date;
+    private LocalDate date;
 
 
 }

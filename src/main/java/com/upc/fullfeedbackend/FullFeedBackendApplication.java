@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class FullFeedBackendApplication{
 
     public static void main(String[] args) {
-       //UtilService.getDATETET();
        SpringApplication.run(FullFeedBackendApplication.class, args);
     }
 
@@ -29,7 +28,7 @@ public class FullFeedBackendApplication{
                     .authorizeRequests()
                     .antMatchers("/user/**","/patient/**","/hospital/**", "/swagger-resources/**", "/preferences",
                             "/swagger-ui.html",
-                            "/v2/api-docs", "/doctor/**",
+                            "/v2/api-docs", "/doctor/**","/illness/**",
                             "/meal/**",
                             "/webjars/**", "/meal/**", "/nutritionalPlan/**", "/personalTreatments","/personalTreatments/**", "/region/**").permitAll()
                     .anyRequest().authenticated();

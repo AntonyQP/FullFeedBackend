@@ -17,10 +17,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,77 +32,28 @@ public class UtilService {
 
     private static final ZoneId oldZone = ZoneId.of(TimeZone.getDefault().getID());
 
-    public static Date getNowDate(){
-        //Cambiar cuando se suba a Amazon
+    public static LocalDate getNowDate(){
+        LocalDateTime oldDateTime = LocalDateTime.now();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        String  tzCalendar = calendar.getTimeZone().getID();
+        ZoneId newZone = ZoneId.of("America/Lima");
 
-        if (!tzCalendar.equals("America/Bogota")){
-            calendar.add(Calendar.HOUR_OF_DAY, -5);
-        }
+        LocalDateTime newDateTime = oldDateTime.atZone(oldZone)
+                .withZoneSameInstant(newZone)
+                .toLocalDateTime();
 
-        return calendar.getTime();
+        System.out.println(newDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        System.out.println(newDateTime.toLocalDate());
+
+        return newDateTime.toLocalDate();
     }
-
 
     public static LocalDate getNowDateMealsWhitAddDays(Integer days){
-
-        LocalDateTime oldDateTime = LocalDateTime.now();
-
-        ZoneId newZone = ZoneId.of("America/Lima");
-
-        LocalDateTime newDateTime = oldDateTime.atZone(oldZone)
-                .withZoneSameInstant(newZone)
-                .toLocalDateTime();
-
-        System.out.println(newDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
-        System.out.println(newDateTime.toLocalDate());
-
-        return newDateTime.toLocalDate().plusDays(days);
-
-
-
-//        System.out.println(TimeZone.getAvailableIDs());
-//
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(new Date());
-//
-//        String tzCalendar = calendar.getTimeZone().getID();
-//
-//        if (!tzCalendar.equals("America/Bogota") && calendar.get(Calendar.HOUR)!= 0){
-//            calendar.add(Calendar.HOUR_OF_DAY, -5);
-//        }
-//
-//        calendar.set(Calendar.HOUR, 0);
-//        calendar.set(Calendar.MINUTE, 0);
-//        calendar.set(Calendar.SECOND, 0);
-//        calendar.set(Calendar.MILLISECOND, 0);
-//        calendar.set(Calendar.HOUR_OF_DAY, 0);
-//
-//        calendar.add(Calendar.DATE, days);
-//        System.out.println(calendar.getTime());
-//        return calendar.getTime();
+        return getNowDate().plusDays(days);
     }
 
-
-    public static String getDATETET(){
-
-        LocalDateTime oldDateTime = LocalDateTime.now();
-
-        ZoneId newZone = ZoneId.of("America/Lima");
-
-        LocalDateTime newDateTime = oldDateTime.atZone(oldZone)
-                .withZoneSameInstant(newZone)
-                .toLocalDateTime();
-
-        System.out.println(newDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
-
-        System.out.println(newDateTime.toLocalDate());
-
-        return newDateTime.toLocalDate().toString();
-
+    public static Integer getActualAge(LocalDate date){
+        Period age = Period.between(date, getNowDate());
+        return  age.getYears();
     }
 
     public static Double getCaloriesForPatient(Patient patient){
@@ -147,7 +95,7 @@ public class UtilService {
 
     public static String  encriptarContrasena (String contrasena){
 
-        byte[] salt = new String("12345678").getBytes();
+        byte[] salt = "12345678".getBytes();
         int iterationCount = 40000;
         int keyLength = 128;
         SecretKeySpec key = null;
@@ -167,7 +115,7 @@ public class UtilService {
     }
     public static String  desencriptarContrasena (String contrasena){
 
-        byte[] salt = new String("12345678").getBytes();
+        byte[] salt = "12345678".getBytes();
         int iterationCount = 40000;
         int keyLength = 128;
         SecretKeySpec key = null;

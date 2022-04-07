@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -37,7 +38,7 @@ public class User {
     @Column(length = 250)
     private String lastName;
 
-    private Date birthDate;
+    private LocalDate birthDate;
 
     private String phone;
 
@@ -48,7 +49,7 @@ public class User {
     @Column(length = 8)
     private String dni = "";
 
-    private Date registerDate;
+    private LocalDate registerDate;
     //d-p
     @Column(length = 1, nullable = false)
     private String rol;

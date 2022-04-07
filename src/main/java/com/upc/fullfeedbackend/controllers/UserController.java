@@ -10,6 +10,7 @@ import org.springframework.http.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,10 +32,6 @@ public class UserController {
     MealService mealService;
 
 
-    @GetMapping("/hora")
-    public String hora(){
-        return UtilService.getDATETET();
-    }
 
     @PostMapping("/doctor")
     public ResponseEntity<ResponseDTO<Doctor>> registerDoctor(@RequestBody RegisterDoctorRequestDTO request) {
@@ -66,8 +63,9 @@ public class UserController {
     }
 
 
-    @PostMapping("/patient")
-    private ResponseEntity<ResponseDTO<Patient>> registerPatient(@RequestBody RegisterPatientRequestDTO request) {
+    @PostMapping(value = "/patient", consumes = {"multipart/form-data"})
+    private ResponseEntity<ResponseDTO<Patient>> registerPatient(@RequestPart(value = "profilePic",required = false) MultipartFile profilePic,
+                                                                 @RequestPart("request") RegisterPatientRequestDTO request) {
         ResponseDTO<Patient> registerResponseDTO = new ResponseDTO<>();
 
         User existentUser = userService.findByDni(request.getDni());

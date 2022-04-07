@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PreferencesRepository extends JpaRepository<Preferences, Long> {
 
-    public Preferences findByName(String name);
+    Preferences findByName(String name);
 
 }

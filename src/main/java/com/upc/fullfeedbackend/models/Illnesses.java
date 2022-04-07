@@ -16,7 +16,7 @@ public class Illnesses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long illnesses;
+    private Long illnessesId;
 
     @Column(length = 100)
     private String name;

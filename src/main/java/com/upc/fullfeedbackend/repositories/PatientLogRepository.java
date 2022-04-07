@@ -13,6 +13,6 @@ public interface PatientLogRepository extends JpaRepository<PatientLog, Long> {
 
 
     @Query(value = "SELECT * from PATIENT_LOG pl where pl.patient_id = ?1 ORDER BY pl.date DESC LIMIT 12",nativeQuery = true)
-    public List<PatientLog> getWeightHistorial(Long patientId);
+    List<PatientLog> getWeightHistorial(Long patientId);
 
 }

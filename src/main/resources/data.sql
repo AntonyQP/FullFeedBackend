@@ -1,37 +1,37 @@
-INSERT INTO region(`name`) VALUES ('AMAZONAS');
-INSERT INTO region(`name`) VALUES ('ANCASH');
-INSERT INTO region(`name`) VALUES ('APURIMAC');
-INSERT INTO region(`name`) VALUES ('AREQUIPA');
-INSERT INTO region(`name`) VALUES ('AYACUCHO');
-INSERT INTO region(`name`) VALUES ('CAJAMARCA');
-INSERT INTO region(`name`) VALUES ('CALLAO');
-INSERT INTO region(`name`) VALUES ('CUSCO');
-INSERT INTO region(`name`) VALUES ('HUANCAVELICA');
-INSERT INTO region(`name`) VALUES ('HUANUCO');
-INSERT INTO region(`name`) VALUES ('ICA');
-INSERT INTO region(`name`) VALUES ('JUNIN');
-INSERT INTO region(`name`) VALUES ('LA LIBERTAD');
-INSERT INTO region(`name`) VALUES ('LAMBAYEQUE');
-INSERT INTO region(`name`) VALUES ('LIMA');
-INSERT INTO region(`name`) VALUES ('LORETO');
-INSERT INTO region(`name`) VALUES ('MADRE DE DIOS');
-INSERT INTO region(`name`) VALUES ('MOQUEGUA');
-INSERT INTO region(`name`) VALUES ('PASCO');
-INSERT INTO region(`name`) VALUES ('PUNO');
-INSERT INTO region(`name`) VALUES ('SAN MARTIN');
-INSERT INTO region(`name`) VALUES ('TACNA');
-INSERT INTO region(`name`) VALUES ('TUMBES');
-INSERT INTO region(`name`) VALUES ('UCAYALI');
+INSERT INTO region(`region_id`,`name`) VALUES (1,'AMAZONAS');
+INSERT INTO region(`region_id`,`name`) VALUES (2,'ANCASH');
+INSERT INTO region(`region_id`,`name`) VALUES (3,'APURIMAC');
+INSERT INTO region(`region_id`,`name`) VALUES (4,'AREQUIPA');
+INSERT INTO region(`region_id`,`name`) VALUES (5,'AYACUCHO');
+INSERT INTO region(`region_id`,`name`) VALUES (6,'CAJAMARCA');
+INSERT INTO region(`region_id`,`name`) VALUES (7,'CALLAO');
+INSERT INTO region(`region_id`,`name`) VALUES (8,'CUSCO');
+INSERT INTO region(`region_id`,`name`) VALUES (9,'HUANCAVELICA');
+INSERT INTO region(`region_id`,`name`) VALUES (10,'HUANUCO');
+INSERT INTO region(`region_id`,`name`) VALUES (11,'ICA');
+INSERT INTO region(`region_id`,`name`) VALUES (12,'JUNIN');
+INSERT INTO region(`region_id`,`name`) VALUES (13,'LA LIBERTAD');
+INSERT INTO region(`region_id`,`name`) VALUES (14,'LAMBAYEQUE');
+INSERT INTO region(`region_id`,`name`) VALUES (15,'LIMA');
+INSERT INTO region(`region_id`,`name`) VALUES (16,'LORETO');
+INSERT INTO region(`region_id`,`name`) VALUES (17,'MADRE DE DIOS');
+INSERT INTO region(`region_id`,`name`) VALUES (18,'MOQUEGUA');
+INSERT INTO region(`region_id`,`name`) VALUES (19,'PASCO');
+INSERT INTO region(`region_id`,`name`) VALUES (20,'PUNO');
+INSERT INTO region(`region_id`,`name`) VALUES (21,'SAN MARTIN');
+INSERT INTO region(`region_id`,`name`) VALUES (22,'TACNA');
+INSERT INTO region(`region_id`,`name`) VALUES (23,'TUMBES');
+INSERT INTO region(`region_id`,`name`) VALUES (24,'UCAYALI');
 
 
 
 
 
-INSERT INTO category(`name`) VALUES ('CARNES');
-INSERT INTO category(`name`) VALUES ('VERDURAS');
-INSERT INTO category(`name`) VALUES ('MARISCOS');
-INSERT INTO category(`name`) VALUES ('TUBERCULOS');
-INSERT INTO category(`name`) VALUES ('FRUTAS');
+INSERT INTO category(`category_id`, `name`) VALUES (1,'CARNES');
+INSERT INTO category(`category_id`, `name`) VALUES (2,'VERDURAS');
+INSERT INTO category(`category_id`, `name`) VALUES (3,'MARISCOS');
+INSERT INTO category(`category_id`, `name`) VALUES (4,'TUBERCULOS');
+INSERT INTO category(`category_id`, `name`) VALUES (5,'FRUTAS');
 
 INSERT INTO preferences (`name`,`category_id`) VALUES ('CERDO',     1);
 INSERT INTO preferences (`name`,`category_id`) VALUES ('CABRITO',   1);
@@ -71,14 +71,19 @@ INSERT INTO preferences (`name`,`category_id`) VALUES ('PLATANO',   5);
 INSERT INTO preferences (`name`,`category_id`) VALUES ('CARAMBOLA', 5);
 
 
-
-INSERT INTO personal_treatment(`active`, `end_date`, `start_date`, `doctor_id`, `patient_id`)
-VALUES (1,now(),now(), 4,4);
-
-
-
-INSERT INTO nutritional_plan (`meal_date`,`personal_treatments_id`,`is_active`)
-VALUES (now(),4,0);
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (1,'','Diabetes Tipo 1');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (2,'','Diabetes Tipo 2');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (3,'','Diabetes Tipo 3');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (4,'','Diabetes Tipo 4');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (5,'','Diabetes Tipo 5');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (6,'','Cálculos Renales');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (7,'','Cáncer');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (8,'','Asma');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (9,'','Enfermedad de Crohn');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (10,'','Desnutrición');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (11,'','Anemía');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (12,'','Anorexia');
+INSERT INTO `illnesses` (`illnesses_id`,`description`,`name`)VALUES (13,'','Bulimia');
 
 
 SET FOREIGN_KEY_CHECKS=0;

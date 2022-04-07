@@ -10,6 +10,6 @@ public interface NutritionalPlanRepository extends JpaRepository<NutritionalPlan
 
 
     @Query("select n from NutritionalPlan n where n.personalTreatments.patient.patientId = ?1 and n.isActive = 1")
-    public NutritionalPlan findByPersonalTreatments_Patient_PatientIdAndIsActive(Long patientId);
+    NutritionalPlan findByPersonalTreatments_Patient_PatientIdAndIsActive(Long patientId);
 
 }

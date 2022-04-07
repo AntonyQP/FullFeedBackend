@@ -1,21 +1,20 @@
 package com.upc.fullfeedbackend.controllers;
 
 import com.upc.fullfeedbackend.models.*;
+import com.upc.fullfeedbackend.models.dto.PatientProgressDTO;
 import com.upc.fullfeedbackend.models.dto.PatientUpdateDTO;
 import com.upc.fullfeedbackend.models.dto.PreferencesDTO;
-import com.upc.fullfeedbackend.models.dto.PatientProgressDTO;
 import com.upc.fullfeedbackend.models.dto.ResponseDTO;
 import com.upc.fullfeedbackend.services.*;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
-import java.sql.Time;
-import java.time.ZoneId;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/patient")
@@ -55,7 +54,7 @@ public class PatientController {
 
         PatientLog patientLog = new PatientLog();
 
-        Date date = UtilService.getNowDate();
+        LocalDate date = UtilService.getNowDate();
 
         ResponseDTO<Patient> responseDTO = new ResponseDTO<>();
 

@@ -113,7 +113,7 @@ public class UserService {
         patient.setImc(request.getImc());
         patient.setWeight(request.getWeight());
         patient.setTmb(request.getTmb());
-        patient.setAge(HallarEdadActual(request.getBirthDate()));
+        patient.setAge(UtilService.getActualAge(request.getBirthDate()));
 
         Region region =  regionService.getRegionById(request.getRegionId());
         patient.setRegion(region);
@@ -142,21 +142,6 @@ public class UserService {
         return patient;
     }
 
-
-
-
-    public Integer HallarEdadActual(Date date){
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-
-        int y = c.get(Calendar.YEAR);
-        int m = c.get(Calendar.MONTH) + 1 ;
-        int d = c.get(Calendar.DAY_OF_MONTH);
-
-        LocalDate now = LocalDate.now();
-        Period age = Period.between(LocalDate.of(y,m,d), now);
-        return  age.getYears();
-    }
 
 
 

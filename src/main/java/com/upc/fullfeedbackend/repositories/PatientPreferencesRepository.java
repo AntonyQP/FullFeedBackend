@@ -17,10 +17,10 @@ import java.util.List;
 public interface PatientPreferencesRepository extends JpaRepository<PatientPreferences, Long> {
 
     @Query("select p from PatientPreferences p where p.patient.patientId = ?1 and p.preferences.preferencesId = ?2")
-    public PatientPreferences findByPatientAndPreference(Long patientId, Long preferenceId);
+    PatientPreferences findByPatientAndPreference(Long patientId, Long preferenceId);
 
     @Query("select p from PatientPreferences p where p.patient.patientId = ?1")
-    public List<PatientPreferences> findAllByPatient_PatientId(Long patientId);
+    List<PatientPreferences> findAllByPatient_PatientId(Long patientId);
 
     @Transactional
     @Modifying
@@ -28,9 +28,9 @@ public interface PatientPreferencesRepository extends JpaRepository<PatientPrefe
     Integer deletePreferenceFromPatient(Long roleId);
 
     @Query("select p.preferences from PatientPreferences p where p.patient.patientId = ?1 and p.type = 'ALLERGY'")
-    public List<Preferences> getAllergiesByPatient(Long patientId);
+    List<Preferences> getAllergiesByPatient(Long patientId);
 
     @Query("select p.preferences from PatientPreferences p where p.patient.patientId = ?1 and p.type = 'FAVORITE'")
-    public List<Preferences> getFavoritesByPatient(Long patientId);
+    List<Preferences> getFavoritesByPatient(Long patientId);
 
 }
