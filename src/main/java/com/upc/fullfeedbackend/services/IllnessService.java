@@ -44,7 +44,7 @@ public class IllnessService {
     public List<PatientIllnesses> removePatientIllnesses(Patient patient, List<Long> illnessesIds){
 
         try {
-            List list = patientIllnessesRepository.findPatientIllnessesByPatientAndIllness(patient.getPatientId(), illnessesIds);
+            List<PatientIllnesses> list = patientIllnessesRepository.findPatientIllnessesByPatientAndIllness(patient.getPatientId(), illnessesIds);
             if (!list.isEmpty()){
                 patientIllnessesRepository.deletePreferenceFromPatient(list);
                 return new ArrayList<PatientIllnesses>();

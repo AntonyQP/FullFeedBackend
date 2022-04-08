@@ -27,7 +27,7 @@ public interface PatientIllnessesRepository extends JpaRepository<PatientIllness
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM PatientIllnesses p WHERE p.patientIllnessesId in ?1")
-    public Integer deletePreferenceFromPatient(List<Long> patientIllnessId);
+    @Query("DELETE FROM PatientIllnesses p WHERE p in ?1")
+    public void deletePreferenceFromPatient(List<PatientIllnesses> patientIllnessId);
 
 }
