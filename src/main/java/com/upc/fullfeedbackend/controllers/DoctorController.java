@@ -115,7 +115,7 @@ public class DoctorController {
     }
 
     @GetMapping("/getPatientThatNotCompleteDayDiet")
-    public ResponseEntity<ResponseDTO<List<FailedMealDayPatientsDTO>>> verifyPatientsDayProgress(@RequestParam Long doctorId){
+    public ResponseEntity<ResponseDTO<List<FailedMealDayPatientsDTO>>> verifyPatientsDayProgress(@RequestParam Long doctorId, @RequestParam String schedule){
         ResponseDTO<List<FailedMealDayPatientsDTO>> responseDTO = new ResponseDTO<>();
         try {
             Doctor doctor = doctorService.getDoctorById(doctorId);
@@ -129,7 +129,7 @@ public class DoctorController {
             responseDTO.setHttpCode(HttpStatus.OK.value());
             responseDTO.setErrorCode(0);
             responseDTO.setErrorMessage("");
-            responseDTO.setData(doctorService.verifyPatientsThatNotMarkMeals(doctorId));
+            responseDTO.setData(doctorService.verifyPatientsThatNotMarkMeals(doctorId, schedule));
 
             return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 

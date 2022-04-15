@@ -31,7 +31,10 @@ public interface PersonalTreatmentsRepository extends JpaRepository<PersonalTrea
     Integer countActivePatientsByDoctor(Long doctorId);
 
 
-    @Query(value = "SELECT SUM(m.status) 'result', pt.patient_id from personal_treatment pt JOIN doctor d ON pt.doctor_id = d.doctor_id  JOIN nutritional_plan np ON pt.personal_treatment_id = np.personal_treatments_id JOIN meal m  ON np.nutritional_plan_id = m.nutritional_plan_id WHERE d.doctor_id = ?1 and pt.active = 1 and np.is_active = 1 and m.day = ?2 GROUP BY pt.patient_id;", nativeQuery = true)
+    @Query(value = "SELECT SUM(m.status) 'result', pt.patient_id from personal_treatment pt JOIN doctor d ON pt.doctor_id = d.doctor_id  JOIN nutritional_plan np ON pt.personal_treatment_id = np.personal_treatments_id JOIN meal m  ON np.nutritional_plan_id = m.nutritional_plan_id WHERE d.doctor_id = ?1 and pt.active = 1 and np.is_active = 1 and m.day = ?2 and m.schedule = ?3 GROUP BY pt.patient_id;", nativeQuery = true)
     List<Map<Object, Object>> findPatientsMarkMealsByDoctor(Long doctorId, LocalDate date);
+
+    @Query(value = "SELECT m.meal_id,m.status,m.schedule, pt.patient_id from personal_treatment pt JOIN doctor d ON pt.doctor_id = d.doctor_id  JOIN nutritional_plan np ON pt.personal_treatment_id = np.personal_treatments_id JOIN meal m  ON np.nutritional_plan_id = m.nutritional_plan_id WHERE d.doctor_id = :doctorId and pt.active = 1 and np.is_active = 1 and m.day = :date and m.schedule = :schedule", nativeQuery = true)
+    List<Map<Object, Object>> findPatientsMarkMealScheduleByDoctor(Long doctorId, LocalDate date, String schedule);
 
 }

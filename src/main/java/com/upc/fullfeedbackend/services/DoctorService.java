@@ -70,11 +70,11 @@ public class DoctorService {
 
     }
 
-    public List<FailedMealDayPatientsDTO> verifyPatientsThatNotMarkMeals(Long doctorId){
-        List<Map<Object, Object>> patients = personalTreatmentsRepository.findPatientsMarkMealsByDoctor(doctorId, UtilService.getNowDate());
+    public List<FailedMealDayPatientsDTO> verifyPatientsThatNotMarkMeals(Long doctorId, String schedule){
+        List<Map<Object, Object>> patients = personalTreatmentsRepository.findPatientsMarkMealScheduleByDoctor(doctorId, UtilService.getNowDate(),schedule);
         List<FailedMealDayPatientsDTO> patientsDTOS = new ArrayList<>();
         for (Map<Object,Object> patient: patients){
-            if (Long.valueOf(patient.get("result").toString()) >= 5){
+            if (Long.valueOf(patient.get("status").toString()) >= 1){
                 continue;
             }
             FailedMealDayPatientsDTO patientDTO = new FailedMealDayPatientsDTO();
