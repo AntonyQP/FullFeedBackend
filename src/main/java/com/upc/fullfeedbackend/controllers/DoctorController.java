@@ -2,6 +2,7 @@ package com.upc.fullfeedbackend.controllers;
 
 import com.upc.fullfeedbackend.models.Doctor;
 import com.upc.fullfeedbackend.models.Patient;
+import com.upc.fullfeedbackend.models.dto.FailedMealDayPatientsDTO;
 import com.upc.fullfeedbackend.models.dto.PatientsOfDoctorDTO;
 import com.upc.fullfeedbackend.models.dto.ResponseDTO;
 import com.upc.fullfeedbackend.services.DoctorService;
@@ -111,5 +112,34 @@ public class DoctorController {
         responseDTO.setData(null);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/getPatientThatNotCompleteDayDiet")
+    public ResponseEntity<ResponseDTO<List<FailedMealDayPatientsDTO>>> verifyPatientsDayProgress(@RequestParam Long doctorId){
+        ResponseDTO<List<FailedMealDayPatientsDTO>> responseDTO = new ResponseDTO<>();
+        try {
+            Doctor doctor = doctorService.getDoctorById(doctorId);
+            if (doctor == null){
+                responseDTO.setHttpCode(HttpStatus.OK.value());
+                responseDTO.setErrorCode(1);
+                responseDTO.setErrorMessage("El doctor no existe");
+                responseDTO.setData(null);
+                return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            }
+            responseDTO.setHttpCode(HttpStatus.OK.value());
+            responseDTO.setErrorCode(0);
+            responseDTO.setErrorMessage("");
+            responseDTO.setData(doctorService.verifyPatientsThatNotMarkMeals(doctorId));
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+        }catch (Exception e){
+            responseDTO.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            responseDTO.setErrorCode(2);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setData(null);
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

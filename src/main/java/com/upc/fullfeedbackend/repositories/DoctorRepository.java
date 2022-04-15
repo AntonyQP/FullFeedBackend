@@ -20,4 +20,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     @Query("select d from Doctor d where d.accessCode = ?1")
     List<Doctor> findByAccessCode(String accessCode);
 
+
+
 }

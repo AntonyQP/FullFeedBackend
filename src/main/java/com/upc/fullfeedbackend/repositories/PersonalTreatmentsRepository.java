@@ -8,8 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PersonalTreatmentsRepository extends JpaRepository<PersonalTreatments, Long> {
@@ -27,5 +30,8 @@ public interface PersonalTreatmentsRepository extends JpaRepository<PersonalTrea
     @Query("select count(p) from PersonalTreatments p where p.active = 1 and p.doctor.doctorId = ?1")
     Integer countActivePatientsByDoctor(Long doctorId);
 
+
+    @Query(value = "SELECT SUM(m.status) 'result', pt.patient_id from personal_treatment pt JOIN doctor d ON pt.doctor_id = d.doctor_id  JOIN nutritional_plan np ON pt.personal_treatment_id = np.personal_treatments_id JOIN meal m  ON np.nutritional_plan_id = m.nutritional_plan_id WHERE d.doctor_id = ?1 and pt.active = 1 and np.is_active = 1 and m.day = ?2 GROUP BY pt.patient_id;", nativeQuery = true)
+    List<Map<Object, Object>> findPatientsMarkMealsByDoctor(Long doctorId, LocalDate date);
 
 }

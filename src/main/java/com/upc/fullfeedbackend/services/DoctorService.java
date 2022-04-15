@@ -2,13 +2,17 @@ package com.upc.fullfeedbackend.services;
 
 import com.upc.fullfeedbackend.models.Doctor;
 import com.upc.fullfeedbackend.models.Patient;
+import com.upc.fullfeedbackend.models.User;
+import com.upc.fullfeedbackend.models.dto.FailedMealDayPatientsDTO;
 import com.upc.fullfeedbackend.repositories.DoctorRepository;
 import com.upc.fullfeedbackend.repositories.PersonalTreatmentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DoctorService {
@@ -18,6 +22,9 @@ public class DoctorService {
 
     @Autowired
     PersonalTreatmentsRepository personalTreatmentsRepository;
+
+    @Autowired
+    UserService userService;
 
     public List<Doctor> getAllDoctors(){
         return doctorRepository.findAll();
@@ -61,6 +68,22 @@ public class DoctorService {
         }
         return false;
 
+    }
+
+    public List<FailedMealDayPatientsDTO> verifyPatientsThatNotMarkMeals(Long doctorId){
+        List<Map<Object, Object>> patients = personalTreatmentsRepository.findPatientsMarkMealsByDoctor(doctorId, UtilService.getNowDate());
+        List<FailedMealDayPatientsDTO> patientsDTOS = new ArrayList<>();
+        for (Map<Object,Object> patient: patients){
+            if (Long.valueOf(patient.get("result").toString()) >= 5){
+                continue;
+            }
+            FailedMealDayPatientsDTO patientDTO = new FailedMealDayPatientsDTO();
+            User user = userService.getUserByPatientId(Long.valueOf(patient.get("patient_id").toString()));
+            patientDTO.setPatientId(Long.valueOf(patient.get("patient_id").toString()));
+            patientDTO.setPatientName(user.getFirstName() + " " + user.getLastName());
+            patientsDTOS.add(patientDTO);
+        }
+        return patientsDTOS;
     }
 
 }

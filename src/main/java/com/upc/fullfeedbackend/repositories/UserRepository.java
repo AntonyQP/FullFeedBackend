@@ -13,4 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByEmail(String email);
 
+
+    @Query("select p.user from Patient p where p.patientId = ?1")
+    User findUserByPatientId(Long patientId);
+
 }

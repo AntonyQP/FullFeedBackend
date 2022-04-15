@@ -107,9 +107,7 @@ public class MealService {
 
                 meal.setTotalCalories(dish.getCalorias_totales());
                 meal.setGramsPortion(dish.getPorcion_gramos());
-
                 meal.setDay(UtilService.getNowDateMealsWhitAddDays(indexDay));
-
                 meal.setImageUrl("");
                 meals.add(meal);
             }

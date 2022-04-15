@@ -57,6 +57,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUserByPatientId(Long patientId){
+        return userRepository.findUserByPatientId(patientId);
+    }
+
 
     public Doctor registerDoctor(RegisterDoctorRequestDTO request){
         User user = new User();
