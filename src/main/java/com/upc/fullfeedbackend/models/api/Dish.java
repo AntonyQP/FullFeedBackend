@@ -16,5 +16,6 @@ public class Dish {
     private String horario;
     private List<String> region;
     private double porcion_gramos;
+    private String url_image;
 
 }

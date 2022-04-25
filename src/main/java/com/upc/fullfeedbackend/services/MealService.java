@@ -108,7 +108,7 @@ public class MealService {
                 meal.setTotalCalories(dish.getCalorias_totales());
                 meal.setGramsPortion(dish.getPorcion_gramos());
                 meal.setDay(UtilService.getNowDateMealsWhitAddDays(indexDay));
-                meal.setImageUrl("");
+                meal.setImageUrl(dish.getUrl_image() != null ? dish.getUrl_image() : "");
                 meals.add(meal);
             }
             indexDay++;
@@ -161,7 +161,7 @@ public class MealService {
 
             String result = String.join("-", dish.getIngredientes());
             meal.setIngredients(result);
-            meal.setImageUrl("");
+            meal.setImageUrl(dish.getUrl_image() != null ? dish.getUrl_image() : "");
             meals.add(meal);
         }
         return meals;

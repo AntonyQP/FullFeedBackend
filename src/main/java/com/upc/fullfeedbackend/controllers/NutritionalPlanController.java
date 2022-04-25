@@ -117,15 +117,13 @@ public class NutritionalPlanController {
             return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
 
         }catch (Exception e){
-            e.getMessage();
+            responseDTO.setHttpCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            responseDTO.setErrorCode(2);
+            responseDTO.setErrorMessage(e.getMessage());
+            responseDTO.setData(null);
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        responseDTO.setHttpCode(HttpStatus.OK.value());
-        responseDTO.setErrorCode(1);
-        responseDTO.setErrorMessage("Ocurrio un error");
-        responseDTO.setData(null);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     public Integer redondearCalorias(double calorias){
